@@ -1,0 +1,4 @@
+# For bazel 5.3.0, not necessary for 6.0.0+
+build --define=android_incremental_dexing_tool=d8_dexbuilder
+build --define=android_dexmerger_tool=d8_dexmerger
+build --nouse_workers_with_dexbuilder
