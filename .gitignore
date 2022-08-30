@@ -1,0 +1,2 @@
+# Ignore bazel convenience symlinks.
+bazel-*
