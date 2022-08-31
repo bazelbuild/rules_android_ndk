@@ -2,11 +2,16 @@
 
 ## Overview
 
-This repository contains Starlark rules for integrating Bazel with the Android
-NDK. These rules currently work with Android NDK version 25b.
+This repository contains Starlark rules for integrating Bazel with the
+Android NDK. These rules currently work with Android NDK version 25b.
 
-NOTE: This is a development preview of the Android NDK rules and it is not
-guaranteed to be complete or work for every NDK use case.
+NOTE: This is a development preview of the Starlark Android NDK Bazel
+rules. These rules are not guaranteed to be complete or work for every
+NDK use case. Bazel versions up to and including 6.0.0 contain a
+build-in ("native") version of `android_ndk_repository` described at
+https://bazel.build/reference/be/android#android_ndk_repository. Over
+time, these Starlark rules will replace the native version of
+`android_ndk_repository`.
 
 ## Getting Started
 
@@ -50,3 +55,5 @@ e.g. `--fat_apk_cpu=arm64-v7a` or `--fat_apk_cpu=arm64-v7a,x86`.
 
 These flags may also be added to the your project's `.bazelrc` file so that they
 don't have to be specified on the command line.
+
+See the example in https://github.com/bazelbuild/rules_android_ndk/tree/main/examples/basic.
