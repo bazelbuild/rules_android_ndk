@@ -12,12 +12,16 @@ guaranteed to be complete or work for every NDK use case.
 
 To use the Android NDK rules, add the following to your `WORKSPACE` file:
 
+    # Or a later commit
+    RULES_ANDROID_NDK_COMMIT= "810355f147c9470f894fb7304941b099e23fa249"
+    RULES_ANDROID_NDK_SHA = "72462b1dac7f3fab0fd580028f9103742520c9acbddbe48c7009591c9b200e1f"
+
     load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
     http_archive(
         name = "rules_android_ndk",
-        urls = ["TBD"],
-        sha256 = "TBD",
-        strip_prefix = "TBD",
+        url = "https://github.com/bazelbuild/rules_android_ndk/archive/%s.zip" % RULES_ANDROID_NDK_COMMIT,
+        sha256 = RULES_ANDROID_NDK_SHA,
+        strip_prefix = "rules_android_ndk-%s" % RULES_ANDROID_NDK_COMMIT,
     )
     load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
     android_ndk_repository(name = "androidndk")
