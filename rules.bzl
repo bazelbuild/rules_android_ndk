@@ -33,13 +33,13 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.symlink(ndk_path + "/toolchains", "toolchains")
 
-    host_os = "linux"
-
-    host_system_name = "i686-unknown-linux-gnu"
+    if ctx.os.name == "linux":
+      clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
+    elif ctx.os.name == "mac os x":
+      clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
 
     api_level = ctx.attr.api_level or 31
 
-    clang_directory = "toolchains/llvm/prebuilt/%s-x86_64" % host_os
     clang_version = "14.0.6"
     clang_resource_directory = "lib64/clang/%s" % clang_version
 
@@ -67,7 +67,6 @@ def _android_ndk_repository_impl(ctx):
             "{repository_name}": repository_name,
             "{api_level}": str(api_level),
             "{clang_resource_directory}": clang_resource_directory,
-            "{host_system_name}": host_system_name,
             "{sysroot_directory}": sysroot_directory,
         },
         executable = False,

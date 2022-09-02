@@ -43,7 +43,6 @@ cc_toolchain_suite(
     name = "toolchain_config_%s" % target_system_name,
     api_level = {api_level},
     clang_resource_directory = "{clang_resource_directory}",
-    host_system_name = "{host_system_name}",
     target_system_name = target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
 ) for target_system_name in TARGET_SYSTEM_NAMES]

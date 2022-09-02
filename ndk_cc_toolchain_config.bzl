@@ -1493,7 +1493,6 @@ def ndk_cc_toolchain_config_rule_implementation(ctx):
                 "sysroot/usr/include",
             ],
             toolchain_identifier = ctx.attr.toolchain_identifier,
-            host_system_name = ctx.attr.host_system_name,
             target_cpu = {
                 "arm-linux-androideabi": "armeabi-v7a",
                 "aarch64-linux-android": "arm64-v8a",
@@ -1515,13 +1514,6 @@ ndk_cc_toolchain_config_rule = rule(
     attrs = {
         "api_level": attr.int(mandatory = True),
         "clang_resource_directory": attr.string(mandatory = True),
-        "host_system_name": attr.string(
-            mandatory = True,
-            values = [
-                "i686-unknown-linux-gnu",
-                "x86_64-apple-darwin",
-            ],
-        ),
         "target_system_name": attr.string(
             mandatory = True,
             values = [
