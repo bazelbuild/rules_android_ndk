@@ -26,7 +26,10 @@ def _android_ndk_repository_impl(ctx):
 
     ndk_path = ctx.os.environ.get("ANDROID_NDK_HOME", None)
     if ndk_path == None:
-       ndk_path = ctx.attr.path
+      ndk_path = ctx.attr.path
+    if not ndk_path:
+      fail("Either the ANDROID_NDK_HOME environment variable or the " +
+           "path attribute of android_ndk_repository must be set.")
 
     ctx.symlink(ndk_path + "/toolchains", "toolchains")
 
