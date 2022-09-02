@@ -18,8 +18,8 @@ time, these Starlark rules will replace the native version of
 To use the Android NDK rules, add the following to your `WORKSPACE` file:
 
     # Or a later commit
-    RULES_ANDROID_NDK_COMMIT= "810355f147c9470f894fb7304941b099e23fa249"
-    RULES_ANDROID_NDK_SHA = "72462b1dac7f3fab0fd580028f9103742520c9acbddbe48c7009591c9b200e1f"
+    RULES_ANDROID_NDK_COMMIT= "81ec8b79dc50ee97e336a25724fdbb28e33b8d41"
+    RULES_ANDROID_NDK_SHA = "b29409496439cdcdb50a8e161c4953ca78a548e16d3ee729a1b5cd719ffdacbf"
 
     load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
     http_archive(
