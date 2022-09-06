@@ -653,7 +653,6 @@ def ndk_cc_toolchain_config(
                 flag_set(
                     actions = actions.all_cpp_compile,
                     flags = [
-                        "-fno-exceptions",
                         "-std=gnu++17",
                         "-Wc++2a-extensions",
                         "-Woverloaded-virtual",
