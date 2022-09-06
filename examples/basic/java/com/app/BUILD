@@ -1,4 +1,3 @@
-
 android_binary(
     name = "app",
     manifest = "AndroidManifest.xml",
@@ -8,16 +7,16 @@ android_binary(
 )
 
 android_library(
-  name = "applib",
-  srcs = [
-      "MainActivity.java",
-      "Jni.java",
-  ],
-  resource_files = glob(["res/**"]),
-  manifest = "AndroidManifest.xml",
-  deps = [
-    ":jni",
-  ]
+    name = "applib",
+    srcs = [
+        "Jni.java",
+        "MainActivity.java",
+    ],
+    manifest = "AndroidManifest.xml",
+    resource_files = glob(["res/**"]),
+    deps = [
+        ":jni",
+    ],
 )
 
 cc_library(

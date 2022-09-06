@@ -26,17 +26,19 @@ def _android_ndk_repository_impl(ctx):
 
     ndk_path = ctx.os.environ.get("ANDROID_NDK_HOME", None)
     if ndk_path == None:
-      ndk_path = ctx.attr.path
+        ndk_path = ctx.attr.path
     if not ndk_path:
-      fail("Either the ANDROID_NDK_HOME environment variable or the " +
-           "path attribute of android_ndk_repository must be set.")
+        fail("Either the ANDROID_NDK_HOME environment variable or the " +
+             "path attribute of android_ndk_repository must be set.")
 
     ctx.symlink(ndk_path + "/toolchains", "toolchains")
 
     if ctx.os.name == "linux":
-      clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
+        clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
     elif ctx.os.name == "mac os x":
-      clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
+        clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
+    else:
+        fail("Unsupported operating system: " + ctx.os.name)
 
     api_level = ctx.attr.api_level or 31
 
