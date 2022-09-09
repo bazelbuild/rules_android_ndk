@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """A repository rule for integrating the Android NDK."""
+Foo = bar
 
 def _android_ndk_repository_impl(ctx):
     """Install the Android NDK files.
