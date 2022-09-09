@@ -533,10 +533,7 @@ def ndk_cc_toolchain_config(
         ),
 
         # User-settable feature controls warning aggressiveness for compilation.
-        feature(
-            name = "warnings_as_errors",
-            enabled = True,
-        ),
+        feature(name = "warnings_as_errors"),
 
         # Configure the header parsing and preprocessing. Blaze will test to see if
         # the Crosstool supports it if the cc_toolchain specifies
