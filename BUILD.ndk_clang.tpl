@@ -10,6 +10,13 @@ TARGET_SYSTEM_NAMES = (
     "x86_64-linux-android",
 )
 
+_CPU_CONSTRAINT = {
+    "arm-linux-androideabi": "@platforms//cpu:armv7",
+    "aarch64-linux-android": "@platforms//cpu:aarch64",
+    "i686-linux-android": "@platforms//cpu:x86_32",
+    "x86_64-linux-android": "@platforms//cpu:x86_64",
+}
+
 cc_toolchain_suite(
     name = "cc_toolchain_suite",
     toolchains = {
@@ -37,6 +44,16 @@ cc_toolchain_suite(
     supports_header_parsing = 0,
     toolchain_config = ":toolchain_config_%s" % target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
+) for target_system_name in TARGET_SYSTEM_NAMES]
+
+[toolchain(
+    name = "toolchain_%s" % target_system_name,
+    toolchain = ":cc_toolchain_%s" % target_system_name,
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    target_compatible_with = [
+        "@platforms//os:android",
+        _CPU_CONSTRAINT[target_system_name],
+    ],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 [ndk_cc_toolchain_config_rule(
