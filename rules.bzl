@@ -31,8 +31,6 @@ def _android_ndk_repository_impl(ctx):
         fail("Either the ANDROID_NDK_HOME environment variable or the " +
              "path attribute of android_ndk_repository must be set.")
 
-    ctx.symlink(ndk_path + "/toolchains", "toolchains")
-
     if ctx.os.name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
     elif ctx.os.name == "mac os x":
@@ -40,12 +38,14 @@ def _android_ndk_repository_impl(ctx):
     else:
         fail("Unsupported operating system: " + ctx.os.name)
 
+    sysroot_directory = "%s/sysroot" % clang_directory
+
+    _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory)
+
     api_level = ctx.attr.api_level or 31
 
     clang_version = "14.0.6"
     clang_resource_directory = "lib64/clang/%s" % clang_version
-
-    sysroot_directory = "%s/sysroot" % clang_directory
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
@@ -60,8 +60,6 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-    # TODO: This creates a build file in the real ndk directory. This can be
-    # avoided by creating a symlink tree (or partial one).
     ctx.template(
         "%s/BUILD" % clang_directory,
         Label("//:BUILD.ndk_clang.tpl"),
@@ -74,8 +72,6 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-    # TODO: This creates a build file in the real ndk directory. This can be
-    # avoided by creating a symlink tree (or partial one).
     ctx.template(
         "%s/BUILD" % sysroot_directory,
         Label("//:BUILD.ndk_sysroot"),
@@ -84,6 +80,25 @@ def _android_ndk_repository_impl(ctx):
         },
         executable = False,
     )
+
+
+# Manually create a partial symlink tree of the NDK to avoid creating BUILD
+# files in the real NDK directory.
+def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
+    # Path needs to end in "/" for replace() below to work
+    if not ndk_path.endswith("/"):
+      ndk_path = ndk_path + "/"
+
+    for p in ctx.path(ndk_path + clang_directory).readdir():
+      repo_relative_path = str(p).replace(ndk_path, "")
+      # Skip sysroot directory, since it gets its own BUILD file
+      if repo_relative_path != sysroot_directory:
+        ctx.symlink(p, repo_relative_path)
+
+    for p in ctx.path(ndk_path + sysroot_directory).readdir():
+      repo_relative_path = str(p).replace(ndk_path, "")
+      ctx.symlink(p, repo_relative_path)
+
 
 android_ndk_repository = repository_rule(
     implementation = _android_ndk_repository_impl,
