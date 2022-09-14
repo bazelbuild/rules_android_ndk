@@ -12,6 +12,8 @@ platforms:
     - "//java/com/app:app"
   macos:
     working_directory: examples/basic
+    environment:
+      ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
     build_flags:
       - "--fat_apk_cpu=arm64-v8a,x86"
       - "--android_crosstool_top=@androidndk//:toolchain"
