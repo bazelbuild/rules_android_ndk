@@ -81,24 +81,23 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-
 # Manually create a partial symlink tree of the NDK to avoid creating BUILD
 # files in the real NDK directory.
 def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
     # Path needs to end in "/" for replace() below to work
     if not ndk_path.endswith("/"):
-      ndk_path = ndk_path + "/"
+        ndk_path = ndk_path + "/"
 
     for p in ctx.path(ndk_path + clang_directory).readdir():
-      repo_relative_path = str(p).replace(ndk_path, "")
-      # Skip sysroot directory, since it gets its own BUILD file
-      if repo_relative_path != sysroot_directory:
-        ctx.symlink(p, repo_relative_path)
+        repo_relative_path = str(p).replace(ndk_path, "")
+
+        # Skip sysroot directory, since it gets its own BUILD file
+        if repo_relative_path != sysroot_directory:
+            ctx.symlink(p, repo_relative_path)
 
     for p in ctx.path(ndk_path + sysroot_directory).readdir():
-      repo_relative_path = str(p).replace(ndk_path, "")
-      ctx.symlink(p, repo_relative_path)
-
+        repo_relative_path = str(p).replace(ndk_path, "")
+        ctx.symlink(p, repo_relative_path)
 
 android_ndk_repository = repository_rule(
     implementation = _android_ndk_repository_impl,
