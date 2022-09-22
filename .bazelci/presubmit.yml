@@ -1,8 +1,9 @@
 ---
 buildifier: latest
-platforms:
+tasks:
   ubuntu1804-basic:
     working_directory: examples/basic
+    platform: ubuntu1804
     environment:
       ANDROID_NDK_HOME: /opt/android-ndk-r25b
     build_flags:
@@ -13,6 +14,7 @@ platforms:
     - "//java/com/app:app"
   ubuntu1804-rules_foreign_cc:
     working_directory: examples/rules_foreign_cc
+    platform: ubuntu1804
     environment:
       ANDROID_NDK_HOME: /opt/android-ndk-r25b
     build_flags:
@@ -23,6 +25,7 @@ platforms:
     - "//java/com/app:app"
   macos-basic:
     working_directory: examples/basic
+    platform: macos
     environment:
       ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
     build_flags:
@@ -33,6 +36,7 @@ platforms:
     - "//java/com/app:app"
   macos-rules_foreign_cc:
     working_directory: examples/rules_foreign_cc
+    platform: macos
     environment:
       ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
     build_flags:
