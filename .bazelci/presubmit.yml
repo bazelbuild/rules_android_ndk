@@ -2,6 +2,7 @@
 buildifier: latest
 tasks:
   ubuntu1804-basic:
+    name: Basic Linux test
     working_directory: examples/basic
     platform: ubuntu1804
     environment:
@@ -13,6 +14,7 @@ tasks:
     build_targets:
     - "//java/com/app:app"
   ubuntu1804-rules_foreign_cc:
+    name: rules_foreign_cc Linux test
     working_directory: examples/rules_foreign_cc
     platform: ubuntu1804
     environment:
@@ -24,6 +26,7 @@ tasks:
     build_targets:
     - "//java/com/app:app"
   macos-basic:
+    name: Basic macOS test
     working_directory: examples/basic
     platform: macos
     environment:
@@ -35,6 +38,7 @@ tasks:
     build_targets:
     - "//java/com/app:app"
   macos-rules_foreign_cc:
+    name: rules_foreign_cc macOS test
     working_directory: examples/rules_foreign_cc
     platform: macos
     environment:
