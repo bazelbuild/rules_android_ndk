@@ -1,7 +1,7 @@
 ---
 buildifier: latest
 platforms:
-  ubuntu1804:
+  ubuntu1804-basic:
     working_directory: examples/basic
     environment:
       ANDROID_NDK_HOME: /opt/android-ndk-r25b
@@ -11,8 +11,28 @@ platforms:
       - "--android_crosstool_top=@androidndk//:toolchain"
     build_targets:
     - "//java/com/app:app"
-  macos:
+  ubuntu1804-rules_foreign_cc:
+    working_directory: examples/rules_foreign_cc
+    environment:
+      ANDROID_NDK_HOME: /opt/android-ndk-r25b
+    build_flags:
+      - "--noincompatible_enable_cc_toolchain_resolution"
+      - "--fat_apk_cpu=arm64-v8a,x86"
+      - "--android_crosstool_top=@androidndk//:toolchain"
+    build_targets:
+    - "//java/com/app:app"
+  macos-basic:
     working_directory: examples/basic
+    environment:
+      ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
+    build_flags:
+      - "--noincompatible_enable_cc_toolchain_resolution"
+      - "--fat_apk_cpu=arm64-v8a,x86"
+      - "--android_crosstool_top=@androidndk//:toolchain"
+    build_targets:
+    - "//java/com/app:app"
+  macos-rules_foreign_cc:
+    working_directory: examples/rules_foreign_cc
     environment:
       ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
     build_flags:
