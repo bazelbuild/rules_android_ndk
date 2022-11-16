@@ -8,7 +8,7 @@ Android NDK. These rules currently work with Android NDK version 25b.
 NOTE: This is a development preview of the Starlark Android NDK Bazel
 rules. These rules are not guaranteed to be complete or work for every
 NDK use case. Bazel versions up to and including 6.0.0 contain a
-build-in ("native") version of `android_ndk_repository` described at
+built-in ("native") version of `android_ndk_repository` described at
 https://bazel.build/reference/be/android#android_ndk_repository. Over
 time, these Starlark rules will replace the native version of
 `android_ndk_repository`.
