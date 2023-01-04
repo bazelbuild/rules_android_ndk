@@ -118,4 +118,4 @@ def android_ndk_repository(name, **kwargs):
         name = name,
         **kwargs
     )
-    native.register_toolchains("@androidndk//:all")
+    native.register_toolchains("@%s//:all" % name)
