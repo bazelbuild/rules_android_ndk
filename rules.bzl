@@ -58,6 +58,14 @@ def _android_ndk_repository_impl(ctx):
     )
 
     ctx.template(
+        "target_systems.bzl",
+        Label("//:target_systems.bzl.tpl"),
+        {
+        },
+        executable = False,
+    )
+
+    ctx.template(
         "%s/BUILD" % clang_directory,
         Label("//:BUILD.ndk_clang.tpl"),
         {
@@ -71,7 +79,7 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.template(
         "%s/BUILD" % sysroot_directory,
-        Label("//:BUILD.ndk_sysroot"),
+        Label("//:BUILD.ndk_sysroot.tpl"),
         {
             "{api_level}": str(api_level),
         },
@@ -96,7 +104,7 @@ def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
         repo_relative_path = str(p).replace(ndk_path, "")
         ctx.symlink(p, repo_relative_path)
 
-android_ndk_repository = repository_rule(
+_android_ndk_repository = repository_rule(
     implementation = _android_ndk_repository_impl,
     attrs = {
         "path": attr.string(),
@@ -104,3 +112,10 @@ android_ndk_repository = repository_rule(
     },
     local = True,
 )
+
+def android_ndk_repository(name, **kwargs):
+    _android_ndk_repository(
+        name = name,
+        **kwargs
+    )
+    native.register_toolchains("@%s//:all" % name)

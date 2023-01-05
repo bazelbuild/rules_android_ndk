@@ -2,12 +2,7 @@
 
 package(default_visibility = ["//visibility:public"])
 
-TARGET_SYSTEM_NAMES = (
-    "arm-linux-androideabi",
-    "aarch64-linux-android",
-    "i686-linux-android",
-    "x86_64-linux-android",
-)
+load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 filegroup(
     name = "all_files",
