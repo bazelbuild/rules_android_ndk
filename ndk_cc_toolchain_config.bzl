@@ -650,8 +650,7 @@ def ndk_cc_toolchain_config(
                 flag_set(
                     actions = actions.all_cpp_compile,
                     flags = [
-                        "-std=gnu++17",
-                        "-Wc++2a-extensions",
+                        "-std=gnu++20",
                         "-Woverloaded-virtual",
                         "-Wnon-virtual-dtor",
                         "-Wno-deprecated",
