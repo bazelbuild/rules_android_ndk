@@ -21,3 +21,10 @@ alias(
         CPU_CONSTRAINT[target_system_name],
     ],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
+
+cc_library(
+    name = "cpufeatures",
+    srcs = glob(["sources/android/cpufeatures/*.c"]),
+    hdrs = glob(["sources/android/cpufeatures/*.h"]),
+    linkopts = ["-ldl"],
+)
