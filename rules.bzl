@@ -104,6 +104,8 @@ def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
         repo_relative_path = str(p).replace(ndk_path, "")
         ctx.symlink(p, repo_relative_path)
 
+    ctx.symlink(ndk_path + "sources", "sources")
+
 _android_ndk_repository = repository_rule(
     implementation = _android_ndk_repository_impl,
     attrs = {
