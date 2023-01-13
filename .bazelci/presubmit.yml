@@ -31,11 +31,11 @@ macos: &macos
 
 tasks:
   basic_example_ubuntu2004:
-    << : [ *ubuntu2004, *basic_example ]
+    <<: [*ubuntu2004, *basic_example]
   basic_example_macos:
-    << : [ *macos, *basic_example ]
+    <<: [*macos, *basic_example]
 
   cpu_features_ubuntu2004:
-    << : [ *ubuntu2004, *cpu_features ]
+    <<: [*ubuntu2004, *cpu_features]
   cpu_features_macos:
-    << : [ *macos, *cpu_features ]
+    <<: [*macos, *cpu_features]
