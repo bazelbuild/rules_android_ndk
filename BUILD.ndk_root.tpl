@@ -24,7 +24,15 @@ alias(
 
 cc_library(
     name = "cpufeatures",
-    srcs = glob(["sources/android/cpufeatures/*.c"]),
-    hdrs = glob(["sources/android/cpufeatures/*.h"]),
+    srcs = glob([
+        "sources/android/cpufeatures/*.c",
+        # Remove this hack, see https://github.com/bazelbuild/rules_android_ndk/issues/32
+        "ndk/sources/android/cpufeatures/*.c",
+    ]),
+    hdrs = glob([
+        "sources/android/cpufeatures/*.h",
+        # Remove this hack, see https://github.com/bazelbuild/rules_android_ndk/issues/32
+        "ndk/sources/android/cpufeatures/*.h",
+    ]),
     linkopts = ["-ldl"],
 )
