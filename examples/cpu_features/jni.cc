@@ -14,6 +14,9 @@
 
 #include <jni.h>
 
+// Prefer using https://github.com/google/cpu_features instead of the
+// cpu_features target defined by android_ndk_repository.
+// See https://github.com/bazelbuild/rules_android_ndk/issues/32
 #include "sources/android/cpufeatures/cpu-features.h"
 
 extern "C" JNIEXPORT int JNICALL

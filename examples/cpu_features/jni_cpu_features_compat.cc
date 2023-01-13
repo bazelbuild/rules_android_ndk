@@ -15,11 +15,13 @@
 #include <jni.h>
 
 // This is only for testing compatibilty with the previous
-// of implementation of android_ndk_repository. Use:
+// of implementation of android_ndk_repository.
+// Prefer using https://github.com/google/cpu_features instead of the
+// cpu_features target defined by android_ndk_repository. If the cpu_features
+// target from android_ndk_repository must be used, use:
 //
 //    #include "sources/android/cpufeatures/cpu-features.h"
 //
-// in future code.
 // See https://github.com/bazelbuild/rules_android_ndk/issues/32
 #include "ndk/sources/android/cpufeatures/cpu-features.h"
 
