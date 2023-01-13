@@ -22,12 +22,12 @@ cpu_features: &cpu_features
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
   environment:
-    - ANDROID_NDK_HOME=/opt/android-ndk-r25b
+    ANDROID_NDK_HOME: /opt/android-ndk-r25b
 
 macos: &macos
   platform: macos
   environment:
-    - ANDROID_NDK_HOME=/Users/buildkite/android-ndk-r25b
+    ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
 tasks:
   basic_example_ubuntu2004:
