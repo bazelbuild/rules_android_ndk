@@ -1,28 +1,41 @@
 ---
 buildifier: latest
-matrix:
-  platform: ["ubuntu2004", "macos"]
+
+basic_example: &basic_example
+  working_directory: examples/basic
+  build_flags:
+    - "--noincompatible_enable_cc_toolchain_resolution"
+    - "--fat_apk_cpu=arm64-v8a,x86"
+    - "--android_crosstool_top=@androidndk//:toolchain"
+  build_targets:
+    - "//java/com/app:app"
+
+cpu_features: &cpu_features
+  working_directory: examples/cpu_features
+  build_flags:
+    - "--noincompatible_enable_cc_toolchain_resolution"
+    - "--cpu=arm64-v8a"
+    - "--crosstool_top=@androidndk//:toolchain"
+  build_targets:
+    - "//:all"
+
+ubuntu2004: &ubuntu2004
+  platform: ubuntu2004
+  environment:
+    - ANDROID_NDK_HOME=/opt/android-ndk-r25b
+
+macos: &macos
+  platform: macos
+  environment:
+    - ANDROID_NDK_HOME=/Users/buildkite/android-ndk-r25b
 
 tasks:
-  basic_example:
-    working_directory: examples/basic
-    platform: ${{ platform }}
-    shell_commands:
-      - '[ $(uname) == "Linux" ] && export ANDROID_NDK_HOME=/opt/android-ndk-r25b || export ANDROID_NDK_HOME=/Users/buildkite/android-ndk-r25b'
-    build_flags:
-      - "--noincompatible_enable_cc_toolchain_resolution"
-      - "--fat_apk_cpu=arm64-v8a,x86"
-      - "--android_crosstool_top=@androidndk//:toolchain"
-    build_targets:
-      - "//java/com/app:app"
-  cpu_features:
-    working_directory: examples/cpu_features
-    platform: ${{ platform }}
-    shell_commands:
-      - '[ $(uname) == "Linux" ] && export ANDROID_NDK_HOME=/opt/android-ndk-r25b || export ANDROID_NDK_HOME=/Users/buildkite/android-ndk-r25b'
-    build_flags:
-      - "--noincompatible_enable_cc_toolchain_resolution"
-      - "--cpu=arm64-v8a"
-      - "--crosstool_top=@androidndk//:toolchain"
-    build_targets:
-      - "//:all"
+  basic_example_ubuntu2004:
+    << : [ *ubuntu2004, *basic_example ]
+  basic_example_macos:
+    << : [ *macos, *basic_example ]
+
+  cpu_features_ubuntu2004:
+    << : [ *ubuntu2004, *cpu_features ]
+  cpu_features_macos:
+    << : [ *macos, *cpu_features ]
