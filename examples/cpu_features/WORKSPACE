@@ -1,0 +1,12 @@
+android_sdk_repository(
+    name = "androidsdk",
+)
+
+local_repository(
+    name = "rules_android_ndk",
+    path = "../..",
+)
+
+load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+
+android_ndk_repository(name = "androidndk")

@@ -106,13 +106,16 @@ def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
 
     ctx.symlink(ndk_path + "sources", "sources")
 
+    # TODO(#32): Remove this hack
+    ctx.symlink(ndk_path + "sources", "ndk/sources")
+
 _android_ndk_repository = repository_rule(
-    implementation = _android_ndk_repository_impl,
     attrs = {
         "path": attr.string(),
         "api_level": attr.int(),
     },
     local = True,
+    implementation = _android_ndk_repository_impl,
 )
 
 def android_ndk_repository(name, **kwargs):
