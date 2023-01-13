@@ -4,7 +4,7 @@ matrix:
   platform: ["ubuntu2004", "macos"]
 
 tasks:
-  basic_example_ubuntu2004:
+  basic_example:
     working_directory: examples/basic
     platform: ${{ platform }}
     shell_commands:
