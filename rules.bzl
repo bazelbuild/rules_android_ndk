@@ -106,7 +106,7 @@ def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
 
     ctx.symlink(ndk_path + "sources", "sources")
 
-    # Remove this hack, see https://github.com/bazelbuild/rules_android_ndk/issues/32
+    # TODO(#32): Remove this hack
     ctx.symlink(ndk_path + "sources", "ndk/sources")
 
 _android_ndk_repository = repository_rule(

@@ -26,12 +26,12 @@ cc_library(
     name = "cpufeatures",
     srcs = glob([
         "sources/android/cpufeatures/*.c",
-        # Remove this hack, see https://github.com/bazelbuild/rules_android_ndk/issues/32
+        # TODO(#32): Remove this hack
         "ndk/sources/android/cpufeatures/*.c",
     ]),
     hdrs = glob([
         "sources/android/cpufeatures/*.h",
-        # Remove this hack, see https://github.com/bazelbuild/rules_android_ndk/issues/32
+        # TODO(#32): Remove this hack
         "ndk/sources/android/cpufeatures/*.h",
     ]),
     linkopts = ["-ldl"],
