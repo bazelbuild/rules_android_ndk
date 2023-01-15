@@ -270,16 +270,6 @@ def ndk_cc_toolchain_config(
         # Blaze requests this feature by default, but we don't care.
         feature(name = "random_seed"),
 
-        # Formerly "needsPic" attribute
-        feature(
-            name = "supports_pic",
-            enabled = True,
-        ),
-
-        # Blaze requests this feature by default.
-        # Blaze tests if this feature is supported before setting the "pic" build-variable.
-        feature(name = "pic"),
-
         # Blaze requests this feature if fission is requested
         # Blaze tests if it's supported to see if we support fission.
         feature(name = "per_object_debug_info"),
@@ -880,7 +870,7 @@ def ndk_cc_toolchain_config(
                 flag_set(
                     actions = actions.all_compile,
                     flag_groups = [
-                        flag_group(flags = ["-fPIC"], expand_if_available = "pic"),
+                        flag_group(flags = ["-fPIC"]),
                     ],
                 ),
                 flag_set(
