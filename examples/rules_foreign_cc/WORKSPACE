@@ -17,8 +17,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_foreign_cc",
-    strip_prefix = "rules_foreign_cc-e5c7d6df6132ed88bb3a67f05dad188f4754474c",
-    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/e5c7d6df6132ed88bb3a67f05dad188f4754474c.tar.gz",
+    strip_prefix = "rules_foreign_cc-d33d862abb4ce3ba178547ef58c9fcb24cec38ca",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/d33d862abb4ce3ba178547ef58c9fcb24cec38ca.tar.gz",
 )
 
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
