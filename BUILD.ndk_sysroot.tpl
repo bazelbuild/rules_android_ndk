@@ -24,7 +24,7 @@ filegroup(
     srcs = glob([
         # "usr/lib/%s/**/*.so" % target_system_name,
         # "usr/lib/%s/**/*.a" % target_system_name,
-    ]),
+    ], allow_empty = True),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 [filegroup(
