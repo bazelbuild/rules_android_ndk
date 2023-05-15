@@ -81,7 +81,7 @@ filegroup(
         "include/**",
         "lib/gcc/%s/**" % target_system_name,
         "lib64/**/*",
-    ]),
+    ], allow_empty = True),
     output_licenses = ["unencumbered"],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
@@ -117,7 +117,7 @@ filegroup(
     ] + glob([
         "lib/gcc/%s/**" % target_system_name,
         "lib64/**",
-    ]),
+    ], allow_empty = True),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 filegroup(
