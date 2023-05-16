@@ -34,9 +34,8 @@ def _android_ndk_repository_impl(ctx):
     if ctx.os.name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
     elif ctx.os.name == "mac os x":
+        # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
-        # Note: ^ darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
-
     else:
         fail("Unsupported operating system: " + ctx.os.name)
 
@@ -50,7 +49,8 @@ def _android_ndk_repository_impl(ctx):
     lib64_clang_files = ctx.path(lib64_clang_directory).readdir()
     if len(lib64_clang_files) != 1:
         fail("Expected 1 directory under " + lib64_clang_directory)
-    clang_resource_directory = lib64_clang_files[0]
+    clang_version = lib64_clang_files[0].basename
+    clang_resource_directory = "lib64/clang/%s" % clang_version
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
@@ -71,7 +71,7 @@ def _android_ndk_repository_impl(ctx):
         {
             "{repository_name}": repository_name,
             "{api_level}": str(api_level),
-            "{clang_resource_directory}": str(clang_resource_directory),
+            "{clang_resource_directory}": clang_resource_directory,
             "{sysroot_directory}": sysroot_directory,
         },
         executable = False,
