@@ -42,12 +42,10 @@ def _android_ndk_repository_impl(ctx):
 
     api_level = ctx.attr.api_level or 31
 
-    lib64_clang_directory = clang_directory + "/lib64/clang"
-    lib64_clang_files = ctx.path(lib64_clang_directory).readdir()
-    if len(lib64_clang_files) != 1:
-        fail("Expected 1 directory under " + lib64_clang_directory)
-    clang_version = lib64_clang_files[0].basename
-    clang_resource_directory = "lib64/clang/%s" % clang_version
+    result = ctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
+    if result.return_code != 0:
+        fail("Failed to execute clang: %s" % result.stderr)
+    clang_resource_directory = result.stdout.strip().split(clang_directory)[1].strip("/")
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
