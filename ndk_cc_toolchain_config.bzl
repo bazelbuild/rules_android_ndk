@@ -532,14 +532,11 @@ def ndk_cc_toolchain_config(
             enabled = True,
         ),
 
-        # By default, allow use of APIs above the api_level, so long as the use is
+        # Optionally, allow use of APIs above the api_level, so long as the use is
         # protected with a call to __builtin_available(android <version>, *).
         # For more, see https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md#weak-symbols-for-api-definitions
         # This takes effect with NDK r26 and greater.
-        feature(
-            name = "android_ndk_conditional_api_availabilty",
-            enabled = True,
-        ),
+        feature(name = "android_ndk_conditional_api_availability"),
 
         # User-settable feature controls warning aggressiveness for compilation.
         feature(name = "warnings_as_errors"),
@@ -697,7 +694,7 @@ def ndk_cc_toolchain_config(
                         "-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__",
                         "-Werror=unguarded-availability",
                     ],
-                    features = ["android_ndk_conditional_api_availabilty"],
+                    features = ["android_ndk_conditional_api_availability"],
                 ),
 
                 ## Options for particular compile modes:
