@@ -1,0 +1,15 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_android_ndk",
+    "maintainers": [
+        {
+            "email": "ben@ben.cm",
+            "github": "Bencodes",
+            "name": "Ben Lee"
+        }
+    ],
+    "repository": [
+        "github:bazelbuild/rules_android_ndk"
+    ],
+    "versions": [],
+    "yanked_versions": {}
+}
