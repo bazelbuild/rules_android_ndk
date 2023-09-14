@@ -14,6 +14,7 @@
 
 """Toolchain command-line configuration logic."""
 
+load("@bazel_tools//tools/build_defs/cc:action_names.bzl", action = "ACTION_NAMES")
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "action_config",
@@ -26,7 +27,6 @@ load(
     "with_feature_set",
     flag_set_ = "flag_set",
 )
-load("@bazel_tools//tools/build_defs/cc:action_names.bzl", action = "ACTION_NAMES")
 
 def ndk_cc_toolchain_config(
         api_level,
