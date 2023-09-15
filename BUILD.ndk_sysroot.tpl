@@ -33,12 +33,14 @@ filegroup(
         "usr/lib/%s/libc++_static.a" % target_system_name,
         "usr/lib/%s/libc++abi.a" % target_system_name,
     ] + {
-        "arm-linux-androideabi": [
+        # libandroid_support was removed in NDK 26, so use a glob
+        # for backward compatibility.
+        "arm-linux-androideabi": glob([
             "usr/lib/arm-linux-androideabi/libandroid_support.a",
-        ],
-        "i686-linux-android": [
+        ], allow_empty = True),
+        "i686-linux-android": glob([
             "usr/lib/i686-linux-android/libandroid_support.a",
-        ],
+        ], allow_empty = True),
     }.get(
         target_system_name,
         [],
