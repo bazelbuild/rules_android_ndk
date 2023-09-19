@@ -17,11 +17,12 @@
 load(":sha256sums.bzl", "ndk_sha256")
 
 def _ndk_platform(ctx):
-    if ctx.os.name == "linux":
+    os_name = ctx.os.name.lower()
+    if os_name == "linux":
         return "linux"
-    elif ctx.os.name.startswith("mac os"):
+    elif os_name.startswith("mac os"):
         return "darwin"
-    elif ctx.os.name.startswith("windows"):
+    elif os_name.startswith("windows"):
         return "windows"
     else:
         fail("Unsupported platform for the Android NDK: {}", ctx.os.name)
