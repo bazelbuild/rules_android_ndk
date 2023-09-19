@@ -24,7 +24,7 @@ def ndk_sha256(filename, repository_ctx):
         a sha256sum string to use with ctx.download_and_extract
     """
     internal_sha256 = _NDK_PACKAGE_SHA256SUMS.get(filename)
-    external_sha256 = repository_ctx.attr.urls.get(filename)
+    external_sha256 = repository_ctx.attr.sha256s.get(filename)
     if internal_sha256 == None and external_sha256 == None:
         fail("This NDK version is unsupported, and you haven't supplied a custom sha256sum for", filename)
     return _NDK_PACKAGE_SHA256SUMS.get(filename)
