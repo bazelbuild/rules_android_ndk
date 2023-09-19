@@ -55,7 +55,7 @@ def _android_ndk_repository_impl(ctx):
 
     if ndk_platform == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
-    elif ndk_platform == "mac os x":
+    elif ndk_platform == "darwin:
         # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
     elif ndk_platform == "windows":
