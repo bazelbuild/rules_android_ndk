@@ -65,6 +65,9 @@ def _android_ndk_repository_impl(ctx):
 
     sysroot_directory = "%s/sysroot" % clang_directory
 
+    # TODO(#32): Remove this hack
+    ctx.symlink("sources", "ndk/sources")
+
     api_level = ctx.attr.api_level
 
     result = ctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
