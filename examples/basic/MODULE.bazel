@@ -1,0 +1,7 @@
+module(name = "basic_example")
+
+bazel_dep(name = "rules_android_ndk")
+local_path_override(
+    module_name = "rules_android_ndk",
+    path = "../..",
+)
