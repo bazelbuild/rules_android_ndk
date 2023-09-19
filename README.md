@@ -28,12 +28,28 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
         sha256 = RULES_ANDROID_NDK_SHA,
         strip_prefix = "rules_android_ndk-%s" % RULES_ANDROID_NDK_COMMIT,
     )
-    load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
-    android_ndk_repository(name = "androidndk")
 
-Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
-`android_ndk_repository` to the path of the local Android NDK installation
-directory.
+    load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+    android_ndk_repository(name = "androidndk", version = "r25c")
+
+You can also customize the `base_url` attribute if, for example, you mirror the NDK archives
+on a private server.
+
+Some sha256 checksums are included in this repository, but these might not be up to date,
+if you want to use a version of the NDK that's not included, you can also specify the `sha256sums`
+attribute which maps platforms to checksums, like so:
+
+```
+android_ndk_repository(
+    name = "androidndk",
+    version = "r25c"
+    sha256sums = {
+        "windows": "f70093964f6cbbe19268f9876a20f92d3a593db3ad2037baadd25fd8d71e84e2",
+        "darwin": "b01bae969a5d0bfa0da18469f650a1628dc388672f30e0ba231da5c74245bc92",
+        "linux": "769ee342ea75f80619d985c2da990c48b3d8eaf45f48783a2d48870d04b46108",
+    }
+)
+```
 
 The `api_level` attribute can also be used to set the Android API level to build
 against.

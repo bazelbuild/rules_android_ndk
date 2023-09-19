@@ -38,11 +38,11 @@ def _android_ndk_repository_impl(ctx):
 
     ndk_version = ctx.attr.version
     ndk_platform = _ndk_platform(ctx)
-    ndk_default_url = "https://dl.google.com/android/repository/android-ndk-{version}-{platform}.zip".format(
+    ndk_url = "{base_url}/android-ndk-{version}-{platform}.zip".format(
+        base_url = ctx.attr.base_url,
         version = ndk_version,
         platform = ndk_platform,
     )
-    ndk_url = ctx.attr.urls.get(ndk_platform, ndk_default_url)
 
     filename = ndk_url.split("/")[-1]
     sha256 = ndk_sha256(filename, ctx)
@@ -118,7 +118,7 @@ _android_ndk_repository = repository_rule(
         "path": attr.string(),
         "api_level": attr.int(),
         "version": attr.string(default = "r25c"),
-        "urls": attr.string_dict(),
+        "base_url": attr.string(default = "https://dl.google.com/android/repository"),
         "sha256s": attr.string_dict(),
     },
     local = True,

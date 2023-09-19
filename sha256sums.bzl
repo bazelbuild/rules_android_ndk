@@ -4,7 +4,7 @@ SHA256 checksums for downloaded NDK archives
 
 _NDK_PACKAGE_SHA256SUMS = {
     # r26
-    "android-ndk-r26-windows.zip": "",
+    "android-ndk-r26-windows.zip": "a748c6634b96991e15cb8902ffa4a498bba2ec6aa8028526de3c4c9dfcf00663",
     "android-ndk-r26-darwin.zip": "b2ab2fd17f71e2d2994c8c0ba2e48e99377806e05bf7477093344c26ab71dec0",
     "android-ndk-r26-linux.zip": "1505c2297a5b7a04ed20b5d44da5665e91bac2b7c0fbcd3ae99b6ccc3a61289a",
     # r25c
