@@ -28,8 +28,15 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
         sha256 = RULES_ANDROID_NDK_SHA,
         strip_prefix = "rules_android_ndk-%s" % RULES_ANDROID_NDK_COMMIT,
     )
-    load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
-    android_ndk_repository(name = "androidndk")
+    load("@rules_android_ndk//:rules.bzl", "android_ndk_register_toolchains")
+
+    # Declare the repository and register toolchains
+    android_ndk_register_toolchains()
+
+    # Alternatively, declare the repository only (which makes it optional) to use
+    # --extra_toolchains=@androidndk//:all when building
+    # load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+    # android_ndk_repository(name = "androidndk")
 
 Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
 `android_ndk_repository` to the path of the local Android NDK installation

@@ -7,6 +7,6 @@ local_repository(
     path = "../..",
 )
 
-load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+load("@rules_android_ndk//:rules.bzl", "android_ndk_register_toolchains")
 
-android_ndk_repository(name = "androidndk")
+android_ndk_register_toolchains()
