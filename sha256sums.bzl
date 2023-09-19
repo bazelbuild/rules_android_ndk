@@ -11,6 +11,10 @@ _NDK_PACKAGE_SHA256SUMS = {
     "android-ndk-r25c-windows.zip": "f70093964f6cbbe19268f9876a20f92d3a593db3ad2037baadd25fd8d71e84e2",
     "android-ndk-r25c-darwin.zip": "b01bae969a5d0bfa0da18469f650a1628dc388672f30e0ba231da5c74245bc92",
     "android-ndk-r25c-linux.zip": "769ee342ea75f80619d985c2da990c48b3d8eaf45f48783a2d48870d04b46108",
+    # r25b
+    "android-ndk-r25b-windows.zip": "c9a72beda4663ab714c9fb3dc06bb9b9f124f2b5199957c86cd6f57eb59fd49a",
+    "android-ndk-r25b-darwin.zip": "7e12f1f809878d4f5d5a901809277aa31546d36c10730fade2036d7d95b3607a",
+    "android-ndk-r25b-linux.zip": "403ac3e3020dd0db63a848dcaba6ceb2603bf64de90949d5c4361f848e44b005",
 }
 
 def ndk_sha256(filename, repository_ctx):

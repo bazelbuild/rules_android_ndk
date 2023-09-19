@@ -55,7 +55,7 @@ def _android_ndk_repository_impl(ctx):
 
     if ndk_platform == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
-    elif ndk_platform == "darwin:
+    elif ndk_platform == "darwin":
         # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
     elif ndk_platform == "windows":
@@ -65,7 +65,7 @@ def _android_ndk_repository_impl(ctx):
 
     sysroot_directory = "%s/sysroot" % clang_directory
 
-    api_level = ctx.attr.api_level or 31
+    api_level = ctx.attr.api_level
 
     result = ctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
     if result.return_code != 0:
@@ -116,9 +116,8 @@ def _android_ndk_repository_impl(ctx):
 
 _android_ndk_repository = repository_rule(
     attrs = {
-        "path": attr.string(),
-        "api_level": attr.int(),
-        "version": attr.string(default = "r25c"),
+        "api_level": attr.int(default = 31),
+        "version": attr.string(default = "r25b"),
         "base_url": attr.string(default = "https://dl.google.com/android/repository"),
         "sha256s": attr.string_dict(),
     },
