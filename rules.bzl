@@ -48,17 +48,19 @@ def _android_ndk_repository_impl(ctx):
     sha256 = ndk_sha256(filename, ctx)
     prefix = "android-ndk-{}".format(ndk_version)
 
-    ctx.download_and_extract(url = ndk_url, sha256 = sha256, stripPrefix = prefix)
+    result = ctx.download_and_extract(url = ndk_url, sha256 = sha256, stripPrefix = prefix)
+    if not result.success:
+        fail("Failed to download NDK archive", ndk_url)
 
-    if ctx.os.name == "linux":
+    if ndk_platform == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
-    elif ctx.os.name == "mac os x":
+    elif ndk_platform == "mac os x":
         # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
-    elif ctx.os.name == "windows":
+    elif ndk_platform == "windows":
         clang_directory = "toolchains/llvm/prebuilt/windows-x86_64"
     else:
-        fail("Unsupported operating system:", ctx.os.name)
+        fail("Unsupported NDK platform", ndk_platform)
 
     sysroot_directory = "%s/sysroot" % clang_directory
 
