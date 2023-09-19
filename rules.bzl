@@ -14,8 +14,20 @@
 
 """A repository rule for integrating the Android NDK."""
 
+load(":sha256sums.bzl", "ndk_sha256")
+
+def _ndk_platform(ctx):
+    if ctx.os.name == "linux":
+        return "linux"
+    elif ctx.os.name.startswith("mac os"):
+        return "darwin"
+    elif ctx.os.name.startswith("windows"):
+        return "windows"
+    else:
+        fail("Unsupported platform for the Android NDK: {}", ctx.os.name)
+
 def _android_ndk_repository_impl(ctx):
-    """Install the Android NDK files.
+    """Download and extract the Android NDK files.
 
     Args:
         ctx: An implementation context.
@@ -23,22 +35,32 @@ def _android_ndk_repository_impl(ctx):
     Returns:
         A final dict of configuration attributes and values.
     """
-    ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
-    if not ndk_path:
-        fail("Either the ANDROID_NDK_HOME environment variable or the " +
-             "path attribute of android_ndk_repository must be set.")
+
+    ndk_version = ctx.attr.version
+    ndk_platform = _ndk_platform(ctx)
+    ndk_default_url = "https://dl.google.com/android/repository/android-ndk-{version}-{platform}.zip".format(
+        version = ndk_version,
+        platform = ndk_platform,
+    )
+    ndk_url = ctx.attr.urls.get(ndk_platform, ndk_default_url)
+
+    filename = ndk_url.split("/")[-1]
+    sha256 = ndk_sha256(filename, ctx)
+    prefix = "android-ndk-{}".format(ndk_version)
+
+    ctx.download_and_extract(url = ndk_url, sha256 = sha256, stripPrefix = prefix)
 
     if ctx.os.name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
     elif ctx.os.name == "mac os x":
         # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
+    elif ctx.os.name == "windows":
+        clang_directory = "toolchains/llvm/prebuilt/windows-x86_64"
     else:
-        fail("Unsupported operating system: " + ctx.os.name)
+        fail("Unsupported operating system:", ctx.os.name)
 
     sysroot_directory = "%s/sysroot" % clang_directory
-
-    _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory)
 
     api_level = ctx.attr.api_level or 31
 
@@ -91,33 +113,13 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-# Manually create a partial symlink tree of the NDK to avoid creating BUILD
-# files in the real NDK directory.
-def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
-    # Path needs to end in "/" for replace() below to work
-    if not ndk_path.endswith("/"):
-        ndk_path = ndk_path + "/"
-
-    for p in ctx.path(ndk_path + clang_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
-
-        # Skip sysroot directory, since it gets its own BUILD file
-        if repo_relative_path != sysroot_directory:
-            ctx.symlink(p, repo_relative_path)
-
-    for p in ctx.path(ndk_path + sysroot_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
-        ctx.symlink(p, repo_relative_path)
-
-    ctx.symlink(ndk_path + "sources", "sources")
-
-    # TODO(#32): Remove this hack
-    ctx.symlink(ndk_path + "sources", "ndk/sources")
-
 _android_ndk_repository = repository_rule(
     attrs = {
         "path": attr.string(),
         "api_level": attr.int(),
+        "version": attr.string(default = "r25c"),
+        "urls": attr.string_dict(),
+        "sha256s": attr.string_dict(),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
