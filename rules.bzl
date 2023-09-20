@@ -75,7 +75,7 @@ def _android_ndk_repository_impl(ctx):
         fail("Failed to execute clang: %s" % result.stderr)
     clang_resource_directory = result.stdout.strip().split(clang_directory)[1].strip("/")
 
-    repository_name = Label("//:BUILD").workspace_name
+    repository_name = ctx.attr._build.workspace_name
 
     ctx.template(
         "BUILD.bazel",
@@ -121,6 +121,7 @@ _android_ndk_repository = repository_rule(
         "version": attr.string(default = "r25b"),
         "base_url": attr.string(default = "https://dl.google.com/android/repository"),
         "sha256s": attr.string_dict(),
+        "_build": attr.label(default = ":BUILD", allow_single_file = True),
         "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
         "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
