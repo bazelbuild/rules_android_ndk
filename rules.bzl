@@ -126,7 +126,6 @@ _android_ndk_repository = repository_rule(
         "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
         "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
     },
-    local = True,
     implementation = _android_ndk_repository_impl,
 )
 
