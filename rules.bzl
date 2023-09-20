@@ -75,13 +75,11 @@ def _android_ndk_repository_impl(ctx):
         fail("Failed to execute clang: %s" % result.stderr)
     clang_resource_directory = result.stdout.strip().split(clang_directory)[1].strip("/")
 
-    # Use a label relative to the workspace from which this repository rule came
-    # to get the workspace name.
     repository_name = Label("//:BUILD").workspace_name
 
     ctx.template(
-        "BUILD",
-        Label("//:BUILD.ndk_root.tpl"),
+        "BUILD.bazel",
+        ctx.attr._template_ndk_root,
         {
             "{clang_directory}": clang_directory,
         },
@@ -90,7 +88,7 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.template(
         "target_systems.bzl",
-        Label("//:target_systems.bzl.tpl"),
+        ctx.attr._template_target_systems,
         {
         },
         executable = False,
@@ -98,7 +96,7 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.template(
         "%s/BUILD" % clang_directory,
-        Label("//:BUILD.ndk_clang.tpl"),
+        ctx.attr._template_ndk_clang,
         {
             "{repository_name}": repository_name,
             "{api_level}": str(api_level),
@@ -110,7 +108,7 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.template(
         "%s/BUILD" % sysroot_directory,
-        Label("//:BUILD.ndk_sysroot.tpl"),
+        ctx.attr._template_ndk_sysroot,
         {
             "{api_level}": str(api_level),
         },
@@ -123,6 +121,10 @@ _android_ndk_repository = repository_rule(
         "version": attr.string(default = "r25b"),
         "base_url": attr.string(default = "https://dl.google.com/android/repository"),
         "sha256s": attr.string_dict(),
+        "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
+        "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
+        "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
+        "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
