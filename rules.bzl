@@ -127,3 +127,7 @@ def android_ndk_repository(name, **kwargs):
         **kwargs
     )
     native.register_toolchains("@%s//:all" % name)
+    native.bind(
+        name = "android/crosstool",
+        actual = "@%s//:toolchain" % name,
+    )
