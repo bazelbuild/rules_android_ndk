@@ -32,6 +32,9 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
     load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
     android_ndk_repository(name = "androidndk", version = "r25c")
 
+    # either register the toolchains, or use `--extra_toolchains` when invoking Bazel
+    register_toolchains("@androidndk//:all")
+
 You can also customize the `base_url` attribute if, for example, you mirror the NDK archives
 on a private server.
 

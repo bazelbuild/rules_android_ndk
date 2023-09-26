@@ -115,7 +115,7 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-_android_ndk_repository = repository_rule(
+android_ndk_repository = repository_rule(
     attrs = {
         "api_level": attr.int(default = 31),
         "version": attr.string(default = "r25b"),
@@ -129,10 +129,3 @@ _android_ndk_repository = repository_rule(
     },
     implementation = _android_ndk_repository_impl,
 )
-
-def android_ndk_repository(name, **kwargs):
-    _android_ndk_repository(
-        name = name,
-        **kwargs
-    )
-    native.register_toolchains("@%s//:all" % name)
