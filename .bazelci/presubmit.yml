@@ -1,37 +1,36 @@
 ---
 buildifier: latest
 
+common: &common
+  build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
+
 basic_example: &basic_example
   working_directory: examples/basic
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--noincompatible_enable_cc_toolchain_resolution"
-    - "--fat_apk_cpu=arm64-v8a,x86"
-    - "--android_crosstool_top=@androidndk//:toolchain"
+    - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=False"
   build_targets:
     - "//java/com/app:app"
+  <<: *common
 
 basic_example_bzlmod: &basic_example_bzlmod
   working_directory: examples/basic
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--noincompatible_enable_cc_toolchain_resolution"
-    - "--fat_apk_cpu=arm64-v8a,x86"
-    - "--android_crosstool_top=@androidndk//:toolchain"
+    - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=True"
   build_targets:
     - "//java/com/app:app"
+  <<: *common
 
 cpu_features: &cpu_features
   working_directory: examples/cpu_features
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--noincompatible_enable_cc_toolchain_resolution"
-    - "--cpu=arm64-v8a"
-    - "--crosstool_top=@androidndk//:toolchain"
+    - "--platforms=//:arm64-v8a"
   build_targets:
     - "//:all"
+  <<: *common
 
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
@@ -45,15 +44,21 @@ macos: &macos
 
 tasks:
   basic_example_ubuntu2004:
+    name: ubuntu2004 Basic Example
     <<: [*ubuntu2004, *basic_example]
   basic_example_bzlmod_ubuntu2004:
+    name: ubuntu2004 Basic Example Bzlmod
     <<: [*ubuntu2004, *basic_example_bzlmod]
   basic_example_macos:
+    name: macos Basic Example
     <<: [*macos, *basic_example]
   basic_example_bzlmod_macos:
+    name: macos Basic Example Bzlmod
     <<: [*macos, *basic_example_bzlmod]
 
   cpu_features_ubuntu2004:
+    name: ubuntu2004 CPU Features
     <<: [*ubuntu2004, *cpu_features]
   cpu_features_macos:
+    name: macos CPU Features
     <<: [*macos, *cpu_features]
