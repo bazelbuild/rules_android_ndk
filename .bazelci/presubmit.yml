@@ -43,21 +43,21 @@ macos: &macos
 
 tasks:
   basic_example_ubuntu2004:
-    name: ubuntu2004 Basic Example
+    name: Basic Example
     <<: [*ubuntu2004, *basic_example]
   basic_example_bzlmod_ubuntu2004:
-    name: ubuntu2004 Basic Example Bzlmod
+    name: Basic Example Bzlmod
     <<: [*ubuntu2004, *basic_example_bzlmod]
   basic_example_macos:
-    name: macos Basic Example
+    name: Basic Example
     <<: [*macos, *basic_example]
   basic_example_bzlmod_macos:
-    name: macos Basic Example Bzlmod
+    name: Basic Example Bzlmod
     <<: [*macos, *basic_example_bzlmod]
 
   cpu_features_ubuntu2004:
-    name: ubuntu2004 CPU Features
+    name: CPU Features
     <<: [*ubuntu2004, *cpu_features]
   cpu_features_macos:
-    name: macos CPU Features
+    name: CPU Features
     <<: [*macos, *cpu_features]
