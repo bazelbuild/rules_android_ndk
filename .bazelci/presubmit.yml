@@ -1,5 +1,6 @@
 ---
 buildifier: latest
+bazel: last_green
 
 basic_example: &basic_example
   working_directory: examples/basic
