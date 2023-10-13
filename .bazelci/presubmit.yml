@@ -1,36 +1,34 @@
 ---
 buildifier: latest
 
-common: &common
-  build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
-
 basic_example: &basic_example
   working_directory: examples/basic
   build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=False"
   build_targets:
     - "//java/com/app:app"
-  <<: *common
 
 basic_example_bzlmod: &basic_example_bzlmod
   working_directory: examples/basic
   build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=True"
   build_targets:
     - "//java/com/app:app"
-  <<: *common
 
 cpu_features: &cpu_features
   working_directory: examples/cpu_features
   build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
   build_targets:
     - "//:all"
-  <<: *common
 
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
