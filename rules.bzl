@@ -52,7 +52,7 @@ def _android_ndk_repository_impl(ctx):
     repository_name = Label("//:BUILD").workspace_name
 
     ctx.template(
-        "BUILD",
+        "BUILD.bazel",
         Label("//:BUILD.ndk_root.tpl"),
         {
             "{clang_directory}": clang_directory,
@@ -68,8 +68,9 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
+    # NOTE: NDK r23 & r24 for linux includes BUILD.bazel. Overwrite it here.
     ctx.template(
-        "%s/BUILD" % clang_directory,
+        "%s/BUILD.bazel" % clang_directory,
         Label("//:BUILD.ndk_clang.tpl"),
         {
             "{repository_name}": repository_name,
@@ -81,7 +82,7 @@ def _android_ndk_repository_impl(ctx):
     )
 
     ctx.template(
-        "%s/BUILD" % sysroot_directory,
+        "%s/BUILD.bazel" % sysroot_directory,
         Label("//:BUILD.ndk_sysroot.tpl"),
         {
             "{api_level}": str(api_level),
