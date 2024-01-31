@@ -49,11 +49,11 @@ def _android_ndk_repository_impl(ctx):
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
-    repository_name = Label("//:BUILD").workspace_name
+    repository_name = ctx.attr._build.workspace_name
 
     ctx.template(
-        "BUILD",
-        Label("//:BUILD.ndk_root.tpl"),
+        "BUILD.bazel",
+        ctx.attr._template_ndk_root,
         {
             "{clang_directory}": clang_directory,
         },
@@ -62,15 +62,15 @@ def _android_ndk_repository_impl(ctx):
 
     ctx.template(
         "target_systems.bzl",
-        Label("//:target_systems.bzl.tpl"),
+        ctx.attr._template_target_systems,
         {
         },
         executable = False,
     )
 
     ctx.template(
-        "%s/BUILD" % clang_directory,
-        Label("//:BUILD.ndk_clang.tpl"),
+        "%s/BUILD.bazel" % clang_directory,
+        ctx.attr._template_ndk_clang,
         {
             "{repository_name}": repository_name,
             "{api_level}": str(api_level),
@@ -81,8 +81,8 @@ def _android_ndk_repository_impl(ctx):
     )
 
     ctx.template(
-        "%s/BUILD" % sysroot_directory,
-        Label("//:BUILD.ndk_sysroot.tpl"),
+        "%s/BUILD.bazel" % sysroot_directory,
+        ctx.attr._template_ndk_sysroot,
         {
             "{api_level}": str(api_level),
         },
@@ -116,6 +116,11 @@ _android_ndk_repository = repository_rule(
     attrs = {
         "path": attr.string(),
         "api_level": attr.int(),
+        "_build": attr.label(default = ":BUILD", allow_single_file = True),
+        "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
+        "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
+        "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
+        "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
