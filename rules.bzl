@@ -25,8 +25,8 @@ def _android_ndk_repository_impl(ctx):
     """
     ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
     if not ndk_path:
-        ctx.file("BUILD.bazel", "# No path to Android NDK was provided", executable = False)
-        return
+        fail("Either the ANDROID_NDK_HOME environment variable or the " +
+             "path attribute of android_ndk_repository must be set.")
 
     if ctx.os.name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
