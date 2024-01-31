@@ -10,3 +10,5 @@ local_repository(
 load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
 
 android_ndk_repository(name = "androidndk")
+
+register_toolchains("@androidndk//:all")

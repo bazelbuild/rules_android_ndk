@@ -29,7 +29,10 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
         strip_prefix = "rules_android_ndk-%s" % RULES_ANDROID_NDK_COMMIT,
     )
     load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+
     android_ndk_repository(name = "androidndk")
+
+    register_toolchains("@androidndk//:all")
 
 Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
 `android_ndk_repository` to the path of the local Android NDK installation
