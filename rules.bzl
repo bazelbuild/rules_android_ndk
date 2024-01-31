@@ -120,14 +120,3 @@ android_ndk_repository = repository_rule(
     local = True,
     implementation = _android_ndk_repository_impl,
 )
-
-def android_ndk_register_toolchains(name = "androidndk", **kwargs):
-    android_ndk_repository(
-        name = name,
-        **kwargs
-    )
-    native.register_toolchains("@%s//:all" % name)
-    native.bind(
-        name = "android/crosstool",
-        actual = "@%s//:toolchain" % name,
-    )
