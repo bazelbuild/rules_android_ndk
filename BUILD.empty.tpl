@@ -22,6 +22,11 @@ load("//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
     ],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
+cc_library(
+    name = "cpufeatures",
+    data = [":error_message"],
+)
+
 genrule(
     name = "invalid_android_ndk_repository_error",
     outs = [
