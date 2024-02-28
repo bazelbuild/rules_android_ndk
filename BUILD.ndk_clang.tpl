@@ -1,6 +1,6 @@
 """Declarations for the NDK's Clang directory."""
 
-load("@{repository_name}//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
+load("//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
 load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
@@ -45,9 +45,9 @@ cc_toolchain_suite(
 filegroup(
     name = "all_binaries",
     srcs = glob([
-      "bin/*",
-      "lib64/**/*",
-      "lib/**/*",
+        "bin/*",
+        "lib64/**/*",
+        "lib/**/*",
     ]),
 )
 
@@ -68,7 +68,6 @@ filegroup(
     output_licenses = ["unencumbered"],
 )
 
-
 [filegroup(
     name = "compiler_files_%s" % target_system_name,
     srcs = [
@@ -77,23 +76,24 @@ filegroup(
         ":as_files",
         ":objcopy_files",
         "//{sysroot_directory}:sysroot_includes",
-    ] + glob([
-        "prebuilt_include/**",
-        "include/**",
-        "lib/gcc/%s/**" % target_system_name,
-        "lib64/**/*",
-        "lib/**/*",
-    ], allow_empty = True),
+    ] + glob(
+        [
+            "prebuilt_include/**",
+            "include/**",
+            "lib/gcc/%s/**" % target_system_name,
+            "lib64/**/*",
+            "lib/**/*",
+        ],
+        allow_empty = True,
+    ),
     output_licenses = ["unencumbered"],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
-
 
 filegroup(
     name = "coverage_files",
     srcs = [":all_binaries"],
     output_licenses = ["unencumbered"],
 )
-
 
 filegroup(
     name = "dwp_files",
@@ -116,11 +116,14 @@ filegroup(
     srcs = [
         ":all_binaries",
         ":static_runtime_lib_%s" % target_system_name,
-    ] + glob([
-        "lib/gcc/%s/**" % target_system_name,
-        "lib64/**",
-        "lib/**",
-    ], allow_empty = True),
+    ] + glob(
+        [
+            "lib/gcc/%s/**" % target_system_name,
+            "lib64/**",
+            "lib/**",
+        ],
+        allow_empty = True,
+    ),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 filegroup(

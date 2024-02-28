@@ -14,63 +14,65 @@
 
 """A repository rule for integrating the Android NDK."""
 
-def _android_ndk_repository_impl(ctx):
+def _get_clang_directory(rctx):
+    if rctx.os.name == "linux":
+        clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
+    elif rctx.os.name == "mac os x":
+        # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
+        clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
+    else:
+        fail("Unsupported operating system: " + rctx.os.name)
+
+    return clang_directory
+
+def _android_ndk_repository_impl(rctx):
     """Install the Android NDK files.
 
     Args:
-        ctx: An implementation context.
+        rctx: An implementation context.
 
     Returns:
         A final dict of configuration attributes and values.
     """
-    ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
-    if not ndk_path:
-        fail("Either the ANDROID_NDK_HOME environment variable or the " +
-             "path attribute of android_ndk_repository must be set.")
-
-    if ctx.os.name == "linux":
-        clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
-    elif ctx.os.name == "mac os x":
-        # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
-        clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
-    else:
-        fail("Unsupported operating system: " + ctx.os.name)
-
+    clang_directory = _get_clang_directory(rctx)
     sysroot_directory = "%s/sysroot" % clang_directory
 
-    _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory)
+    if len(rctx.attr.urls) > 0:
+        rctx.download_and_extract(
+            url = rctx.attr.urls,
+            sha256 = rctx.attr.sha256,
+            stripPrefix = rctx.attr.strip_prefix,
+        )
+    else:
+        ndk_path = rctx.attr.path or rctx.os.environ.get("ANDROID_NDK_HOME", None)
+        if not ndk_path:
+            fail("Either the ANDROID_NDK_HOME environment variable or the " +
+                 "path attribute of android_ndk_repository must be set.")
+        _create_symlinks(rctx, ndk_path, clang_directory, sysroot_directory)
 
-    api_level = ctx.attr.api_level or 31
+    api_level = rctx.attr.api_level or 31
 
-    result = ctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
+    result = rctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
     if result.return_code != 0:
         fail("Failed to execute clang: %s" % result.stderr)
     clang_resource_directory = result.stdout.strip().split(clang_directory)[1].strip("/")
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
-    repository_name = ctx.attr._build.workspace_name
+    repository_name = rctx.attr._build.workspace_name
 
-    ctx.template(
+    rctx.template(
         "BUILD.bazel",
-        ctx.attr._template_ndk_root,
+        rctx.attr._template_ndk_root,
         {
             "{clang_directory}": clang_directory,
         },
         executable = False,
     )
 
-    ctx.template(
-        "target_systems.bzl",
-        ctx.attr._template_target_systems,
-        {
-        },
-        executable = False,
-    )
-
-    ctx.template(
+    rctx.template(
         "%s/BUILD.bazel" % clang_directory,
-        ctx.attr._template_ndk_clang,
+        rctx.attr._template_ndk_clang,
         {
             "{repository_name}": repository_name,
             "{api_level}": str(api_level),
@@ -80,9 +82,25 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-    ctx.template(
+    rctx.template(
+        "target_systems.bzl",
+        rctx.attr._template_target_systems,
+        {
+        },
+        executable = False,
+    )
+
+    rctx.template(
+        "ndk_cc_toolchain_config.bzl",
+        rctx.attr._template_ndk_cc_toolchain_config,
+        {
+        },
+        executable = False,
+    )
+
+    rctx.template(
         "%s/BUILD.bazel" % sysroot_directory,
-        ctx.attr._template_ndk_sysroot,
+        rctx.attr._template_ndk_sysroot,
         {
             "{api_level}": str(api_level),
         },
@@ -116,12 +134,46 @@ android_ndk_repository = repository_rule(
     attrs = {
         "path": attr.string(),
         "api_level": attr.int(),
+        "urls": attr.string_list(),
+        "sha256": attr.string(default = ""),
+        "strip_prefix": attr.string(default = ""),
         "_build": attr.label(default = ":BUILD", allow_single_file = True),
-        "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
+        "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
         "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
         "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
+        "_template_ndk_cc_toolchain_config": attr.label(default = ":ndk_cc_toolchain_config.bzl", allow_single_file = True),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
+)
+
+def _android_ndk_toolchain_impl(rctx):
+    rctx.template(
+        "BUILD.bazel",
+        rctx.attr._template_ndk_toolchain,
+        {
+            "{repository_name}": rctx.name,
+            "{exec_system_names}": "[%s]" % ",".join(['"%s"' % name for name in rctx.attr.exec_system_names]),
+            "{clang_directory}": _get_clang_directory(rctx),
+        },
+        executable = False,
+    )
+
+    rctx.template(
+        "target_systems.bzl",
+        rctx.attr._template_target_systems,
+        {
+        },
+        executable = False,
+    )
+
+android_ndk_toolchain = repository_rule(
+    implementation = _android_ndk_toolchain_impl,
+    attrs = {
+        "exec_system_names": attr.string_list(),
+        "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
+        "_template_ndk_toolchain": attr.label(default = ":BUILD.ndk_toolchain.tpl", allow_single_file = True),
+        "_template_ndk_module": attr.label(default = ":MODULE.ndk_toolchain.tpl", allow_single_file = True),
+    },
 )
