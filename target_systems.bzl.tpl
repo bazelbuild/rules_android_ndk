@@ -14,3 +14,18 @@ CPU_CONSTRAINT = {
     "x86_64-linux-android": "@platforms//cpu:x86_64",
 }
 
+_OS_MAPPING = {
+    "darwin": "macos",
+}
+
+_CPU_MAPPING = {
+    "arm64": "aarch64",
+}
+
+def get_platform_constraints(system_name):
+    os, cpu = system_name.split("_", 1)
+
+    return [
+        "@platforms//os:%s" % (_OS_MAPPING[os] if os in _OS_MAPPING else os),
+        "@platforms//cpu:%s" % (_CPU_MAPPING[cpu] if cpu in _CPU_MAPPING else cpu),
+    ]

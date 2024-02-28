@@ -21,10 +21,13 @@ filegroup(
 
 [filegroup(
     name = "dynamic_runtime_lib_%s" % target_system_name,
-    srcs = glob([
-        # "usr/lib/%s/**/*.so" % target_system_name,
-        # "usr/lib/%s/**/*.a" % target_system_name,
-    ], allow_empty = True),
+    srcs = glob(
+        [
+            # "usr/lib/%s/**/*.so" % target_system_name,
+            # "usr/lib/%s/**/*.a" % target_system_name,
+        ],
+        allow_empty = True,
+    ),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 [filegroup(
@@ -35,12 +38,18 @@ filegroup(
     ] + {
         # libandroid_support was removed in NDK 26, so use a glob
         # for backward compatibility.
-        "arm-linux-androideabi": glob([
-            "usr/lib/arm-linux-androideabi/libandroid_support.a",
-        ], allow_empty = True),
-        "i686-linux-android": glob([
-            "usr/lib/i686-linux-android/libandroid_support.a",
-        ], allow_empty = True),
+        "arm-linux-androideabi": glob(
+            [
+                "usr/lib/arm-linux-androideabi/libandroid_support.a",
+            ],
+            allow_empty = True,
+        ),
+        "i686-linux-android": glob(
+            [
+                "usr/lib/i686-linux-android/libandroid_support.a",
+            ],
+            allow_empty = True,
+        ),
     }.get(
         target_system_name,
         [],

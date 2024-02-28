@@ -60,3 +60,38 @@ These flags may also be added to the your project's `.bazelrc` file so that they
 don't have to be specified on the command line.
 
 See the example in https://github.com/bazelbuild/rules_android_ndk/tree/main/examples/basic.
+
+## Ticketmaster Extensions
+
+It is possible to download the ndk hermetically using a module extension. The ndk must be downloaded according to the current licenses and it is not provided by this repo.
+
+```starlark
+bazel_dep(name = "rules_android_ndk", version = "0.1.0")
+
+git_override(
+    module_name = "rules_android_ndk",
+    commit = "<commit>",
+    remote = "https://github.com/ticketmaster/rules_android_ndk",
+)
+
+ndk = use_extension("@rules_android_ndk//:extensions.bzl", "ndk")
+
+NDK_URL = "https://mycache.example.com/androidndk/%s.tar.gz"
+
+ndk.toolchain(
+    api_level = 21,
+    sha256 = {
+        "darwin_arm64": "<hash>",
+        "linux_aarch64": "<hash>",
+        "linux_x86_64": "<hash>",
+    },
+    urls = {
+        "darwin_arm64": [NDK_URL % "darwin_arm64"],
+        "linux_aarch64": [NDK_URL % "linux_aarch64"],
+        "linux_x86_64": [NDK_URL % "linux_x86_64"],
+    },
+)
+use_repo(ndk, "androidndk", "androidndk_darwin_arm64", "androidndk_linux_aarch64", "androidndk_linux_x86_64")
+
+register_toolchains("@androidndk//:all")
+```

@@ -14,12 +14,12 @@ alias(
 # Loop over TARGET_SYSTEM_NAMES and define all toolchain targets.
 [toolchain(
     name = "toolchain_%s" % target_system_name,
-    toolchain = "//{clang_directory}:cc_toolchain_%s" % target_system_name,
-    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     target_compatible_with = [
         "@platforms//os:android",
         CPU_CONSTRAINT[target_system_name],
     ],
+    toolchain = "//{clang_directory}:cc_toolchain_%s" % target_system_name,
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 cc_library(
