@@ -1,0 +1,25 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_android_ndk",
+    "maintainers": [
+        {
+            "email": "ahumesky@google.com",
+            "github": "ahumesky",
+            "name": "ahumesky"
+        },
+        {
+            "email": "ben@ben.cm",
+            "github": "Bencodes",
+            "name": "Ben Lee"
+        },
+        {
+            "email": "tedx@google.com",
+            "github": "ted-xie",
+            "name": "tedx"
+        }
+    ],
+    "repository": [
+        "github:bazelbuild/rules_android_ndk"
+    ],
+    "versions": [],
+    "yanked_versions": {}
+}

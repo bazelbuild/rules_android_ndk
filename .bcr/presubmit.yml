@@ -1,0 +1,33 @@
+matrix:
+  platform: ["macos", "ubuntu2004"]
+  bazel: ["7.x", "rolling
+
+tasks:
+  verify_targets:
+    name: "Verify build targets"
+    platform: ${{ platform }}
+    bazel: ${{ bazel }}
+    working_directory: examples/basic
+    environment:
+      ANDROID_NDK_HOME: /opt/android-ndk-r25b
+    build_flags:
+      - "--noincompatible_enable_cc_toolchain_resolution"
+      - "--fat_apk_cpu=arm64-v8a,x86"
+      - "--android_crosstool_top=@androidndk//:toolchain"
+      - "--enable_bzlmod=False"
+    build_targets:
+      - "//java/com/app:app"
+  verify_targets_bzlmod:
+    name: "Verify build targets with bzlmod"
+    platform: ${{ platform }}
+    bazel: ${{ bazel }}
+    working_directory: examples/basic
+    environment:
+      ANDROID_NDK_HOME: /opt/android-ndk-r25b
+    build_flags:
+      - "--noincompatible_enable_cc_toolchain_resolution"
+      - "--fat_apk_cpu=arm64-v8a,x86"
+      - "--android_crosstool_top=@androidndk//:toolchain"
+      - "--enable_bzlmod=True"
+    build_targets:
+      - "//java/com/app:app"
