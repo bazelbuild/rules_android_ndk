@@ -54,10 +54,7 @@ def _android_ndk_repository_impl(rctx):
 
     api_level = rctx.attr.api_level or 31
 
-    result = rctx.execute([clang_directory + "/bin/clang", "--print-resource-dir"])
-    if result.return_code != 0:
-        fail("Failed to execute clang: %s" % result.stderr)
-    clang_resource_directory = result.stdout.strip().split(clang_directory)[1].strip("/")
+    clang_resource_directory = "%s/lib/clang/%s" % (clang_directory, str(rctx.attr.clang_resource_version))
 
     # Use a label relative to the workspace from which this repository rule came
     # to get the workspace name.
@@ -140,6 +137,7 @@ android_ndk_repository = repository_rule(
         "sha256": attr.string(default = ""),
         "strip_prefix": attr.string(default = ""),
         "exec_system": attr.string(),
+        "clang_resource_version": attr.int(),
         "_build": attr.label(default = ":BUILD", allow_single_file = True),
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
         "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
