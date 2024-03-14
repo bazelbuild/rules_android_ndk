@@ -56,6 +56,7 @@ def _impl(mctx):
             name = "androidndk_%s" % system_name,
             api_level = toolchain.api_level,
             urls = urls,
+            exec_system = system_name,
             sha256 = toolchain.sha256[system_name] if system_name in toolchain.sha256 else "",
             strip_prefix = toolchain.strip_prefix[system_name] if system_name in toolchain.strip_prefix else "",
         )

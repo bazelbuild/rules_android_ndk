@@ -15,13 +15,15 @@
 """A repository rule for integrating the Android NDK."""
 
 def _get_clang_directory(rctx):
-    if rctx.os.name == "linux":
+    exec_system = rctx.attr.exec_system
+    os_name, _ = (exec_system if exec_system else rctx.os.name).split("_", 1)
+    if os_name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
-    elif rctx.os.name == "mac os x":
+    elif os_name == "mac os x" or os_name == "darwin" or os_name == "macos":
         # Note: darwin-x86_64 does indeed contain fat binaries with arm64 slices, too.
         clang_directory = "toolchains/llvm/prebuilt/darwin-x86_64"
     else:
-        fail("Unsupported operating system: " + rctx.os.name)
+        fail("Unsupported operating system: " + os_name)
 
     return clang_directory
 
@@ -137,6 +139,7 @@ android_ndk_repository = repository_rule(
         "urls": attr.string_list(),
         "sha256": attr.string(default = ""),
         "strip_prefix": attr.string(default = ""),
+        "exec_system": attr.string(),
         "_build": attr.label(default = ":BUILD", allow_single_file = True),
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
         "_template_ndk_root": attr.label(default = ":BUILD.ndk_root.tpl", allow_single_file = True),
@@ -155,7 +158,6 @@ def _android_ndk_toolchain_impl(rctx):
         {
             "{repository_name}": rctx.name,
             "{exec_system_names}": "[%s]" % ",".join(['"%s"' % name for name in rctx.attr.exec_system_names]),
-            "{clang_directory}": _get_clang_directory(rctx),
         },
         executable = False,
     )
