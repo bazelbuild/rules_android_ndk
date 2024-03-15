@@ -11,6 +11,7 @@ _toolchain = tag_class(
         "strip_prefix": attr.string_dict(
             doc = "The prefix to strip from the download archive.",
         ),
+        "clang_resource_version": attr.int(mandatory = True),
         "path": attr.string(
             doc = "A path to a local android ndk installation. If this attribute is not specified, the environment " +
                   "variable ANDROID_NDK_HOME will be used instead. Note that hermetic toolchains provided by the `urls` " +
@@ -19,6 +20,7 @@ _toolchain = tag_class(
         ),
         "api_level": attr.int(
             doc = "The android api level to use",
+            mandatory = True,
         ),
     },
 )
@@ -56,6 +58,8 @@ def _impl(mctx):
             name = "androidndk_%s" % system_name,
             api_level = toolchain.api_level,
             urls = urls,
+            clang_resource_version = toolchain.clang_resource_version,
+            exec_system = system_name,
             sha256 = toolchain.sha256[system_name] if system_name in toolchain.sha256 else "",
             strip_prefix = toolchain.strip_prefix[system_name] if system_name in toolchain.strip_prefix else "",
         )
