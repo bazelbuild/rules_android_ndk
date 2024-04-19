@@ -31,6 +31,7 @@ _OS_MAPPING = {
 
 _CPU_MAPPING = {
     "arm64": "aarch64",
+    "amd64": "x86_64",
 }
 
 def _normalize(system_name):
@@ -67,9 +68,9 @@ def _impl(mctx):
     local_system = _get_local_system(mctx)
 
     direct_deps = ["androidndk"] + ["androidndk_" + system_name for system_name in toolchain.urls.keys()]
-    exec_system_names = toolchain.urls.keys()
+    exec_system_names = [_normalize(key) for key in toolchain.urls.keys()]
 
-    if not (local_system in [_normalize(key) for key in toolchain.urls.keys()]):
+    if not (_normalize(local_system) in [_normalize(key) for key in toolchain.urls.keys()]):
         android_ndk_repository(
             name = "androidndk_local",
             api_level = toolchain.api_level,
@@ -77,7 +78,7 @@ def _impl(mctx):
         )
 
         direct_deps.append("androidndk_local")
-        exec_system_names.append(local_system)
+        exec_system_names.append(_normalize(local_system))
 
     android_ndk_toolchain(
         name = "androidndk",
