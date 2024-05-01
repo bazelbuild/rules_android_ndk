@@ -16,7 +16,7 @@
 
 def _get_clang_directory(rctx):
     exec_system = rctx.attr.exec_system
-    os_name, _ = (exec_system if exec_system else rctx.os.name).split("_", 1)
+    os_name = (exec_system.split("_", 1)[0] if exec_system else rctx.os.name)
     if os_name == "linux":
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
     elif os_name == "mac os x" or os_name == "darwin" or os_name == "macos":
@@ -106,6 +106,9 @@ def _android_ndk_repository_impl(rctx):
         executable = False,
     )
 
+CLANG_FILES = ["lib", "prebuilt_include", "share", "bin", "include", "libexec", "musl", "python3"]
+SYSROOT_FILES = ["usr"]
+
 # Manually create a partial symlink tree of the NDK to avoid creating BUILD
 # files in the real NDK directory.
 def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
@@ -113,20 +116,13 @@ def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
     if not ndk_path.endswith("/"):
         ndk_path = ndk_path + "/"
 
-    for p in ctx.path(ndk_path + clang_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
+    for p in CLANG_FILES:
+        ctx.symlink(ndk_path + clang_directory + "/" + p, clang_directory + "/" + p)
 
-        # Skip sysroot directory, since it gets its own BUILD file
-        if repo_relative_path != sysroot_directory:
-            ctx.symlink(p, repo_relative_path)
-
-    for p in ctx.path(ndk_path + sysroot_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
-        ctx.symlink(p, repo_relative_path)
+    for p in SYSROOT_FILES:
+        ctx.symlink(ndk_path + sysroot_directory + "/" + p, sysroot_directory + "/" + p)
 
     ctx.symlink(ndk_path + "sources", "sources")
-
-    # TODO(#32): Remove this hack
     ctx.symlink(ndk_path + "sources", "ndk/sources")
 
 android_ndk_repository = repository_rule(
@@ -174,6 +170,5 @@ android_ndk_toolchain = repository_rule(
         "exec_system_names": attr.string_list(),
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
         "_template_ndk_toolchain": attr.label(default = ":BUILD.ndk_toolchain.tpl", allow_single_file = True),
-        "_template_ndk_module": attr.label(default = ":MODULE.ndk_toolchain.tpl", allow_single_file = True),
     },
 )

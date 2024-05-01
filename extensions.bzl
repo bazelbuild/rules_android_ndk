@@ -2,6 +2,8 @@ load(":rules.bzl", "android_ndk_repository", "android_ndk_toolchain")
 
 _toolchain = tag_class(
     attrs = {
+        "name": attr.string(default = "androidndk"),
+        "exec_system": attr.string(),
         "urls": attr.string_list_dict(
             doc = "URLs to download a prebuilt android ndk where the key is the system name (os_arch) and the value is a list of URLs.",
         ),
@@ -47,43 +49,45 @@ def _get_local_system(mctx):
 
 def _impl(mctx):
     if len(mctx.modules) != 1 or not mctx.modules[0].is_root:
-        fail("androidsdk is currently only available for the root module")
+        fail("androidndk is currently only available for the root module")
 
-    if len(mctx.modules[0].tags.toolchain) != 1:
-        fail("ndk.toolchain can only be set once")
+    direct_deps = []
 
-    toolchain = mctx.modules[0].tags.toolchain[0]
+    for toolchain in mctx.modules[0].tags.toolchain:
+        if toolchain.name in direct_deps:
+            fail("androidndk toolchain already defined with name %s" % toolchain.name)
 
-    for system_name, urls in toolchain.urls.items():
-        android_ndk_repository(
-            name = "androidndk_%s" % system_name,
-            api_level = toolchain.api_level,
-            urls = urls,
-            clang_resource_version = toolchain.clang_resource_version,
-            exec_system = system_name,
-            sha256 = toolchain.sha256[system_name] if system_name in toolchain.sha256 else "",
-            strip_prefix = toolchain.strip_prefix[system_name] if system_name in toolchain.strip_prefix else "",
+        for system_name, urls in toolchain.urls.items():
+            android_ndk_repository(
+                name = "%s_%s" % (toolchain.name, system_name),
+                api_level = toolchain.api_level,
+                urls = urls,
+                clang_resource_version = toolchain.clang_resource_version,
+                exec_system = system_name,
+                sha256 = toolchain.sha256[system_name] if system_name in toolchain.sha256 else "",
+                strip_prefix = toolchain.strip_prefix[system_name] if system_name in toolchain.strip_prefix else "",
+            )
+
+        local_system = _normalize(toolchain.exec_system if toolchain.exec_system else _get_local_system(mctx))
+
+        direct_deps.extend([toolchain.name] + ["%s_%s" % (toolchain.name, system_name) for system_name in toolchain.urls.keys()])
+        exec_system_names = [_normalize(key) for key in toolchain.urls.keys()]
+
+        if not (local_system in [_normalize(key) for key in toolchain.urls.keys()]):
+            android_ndk_repository(
+                name = "%s_%s" % (toolchain.name, local_system),
+                api_level = toolchain.api_level,
+                path = toolchain.path,
+                exec_system = local_system,
+            )
+
+            direct_deps.append("%s_%s" % (toolchain.name, local_system))
+            exec_system_names.append(local_system)
+
+        android_ndk_toolchain(
+            name = toolchain.name,
+            exec_system_names = exec_system_names,
         )
-
-    local_system = _get_local_system(mctx)
-
-    direct_deps = ["androidndk"] + ["androidndk_" + system_name for system_name in toolchain.urls.keys()]
-    exec_system_names = [_normalize(key) for key in toolchain.urls.keys()]
-
-    if not (_normalize(local_system) in [_normalize(key) for key in toolchain.urls.keys()]):
-        android_ndk_repository(
-            name = "androidndk_local",
-            api_level = toolchain.api_level,
-            path = toolchain.path,
-        )
-
-        direct_deps.append("androidndk_local")
-        exec_system_names.append(_normalize(local_system))
-
-    android_ndk_toolchain(
-        name = "androidndk",
-        exec_system_names = exec_system_names,
-    )
 
     return mctx.extension_metadata(
         root_module_direct_deps = direct_deps,
