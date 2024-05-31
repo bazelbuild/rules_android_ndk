@@ -27,6 +27,8 @@ def _android_ndk_repository_impl(ctx):
     if not ndk_path:
         fail("Either the ANDROID_NDK_HOME environment variable or the " +
              "path attribute of android_ndk_repository must be set.")
+    if ndk_path.startswith("$WORKSPACE_ROOT"):
+        ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
 
     is_windows = False
     executable_extension = ""

@@ -36,7 +36,8 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
 
 Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
 `android_ndk_repository` to the path of the local Android NDK installation
-directory.
+directory. If the path starts with `$WORKSPACE_ROOT`, then this string is
+replaced with the root path of the Bazel workspace.
 
 The `api_level` attribute can also be used to set the Android API level to build
 against.
