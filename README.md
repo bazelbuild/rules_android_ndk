@@ -54,7 +54,7 @@ CPUs:
     x86
     x86_64
 
-e.g. `--fat_apk_cpu=arm64-v7a` or `--fat_apk_cpu=arm64-v7a,x86`.
+e.g. `--fat_apk_cpu=arm64-v8a` or `--fat_apk_cpu=arm64-v8a,x86`.
 
 These flags may also be added to the your project's `.bazelrc` file so that they
 don't have to be specified on the command line.
