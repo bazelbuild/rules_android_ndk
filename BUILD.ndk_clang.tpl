@@ -40,6 +40,7 @@ cc_toolchain_suite(
     clang_resource_directory = "{clang_resource_directory}",
     target_system_name = target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
+    executable_extension = "{executable_extension}",
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 filegroup(
@@ -72,7 +73,7 @@ filegroup(
 [filegroup(
     name = "compiler_files_%s" % target_system_name,
     srcs = [
-        "bin/clang",
+        "bin/clang{executable_extension}",
         ":ar_files",
         ":as_files",
         ":objcopy_files",
