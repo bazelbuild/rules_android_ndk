@@ -1,3 +1,7 @@
 # For bazel 5.3.0, not necessary for 6.0.0+
 build --define=android_incremental_dexing_tool=d8_dexbuilder
 build --define=android_dexmerger_tool=d8_dexmerger
+
+# TODO: Remove once https://github.com/bazelbuild/rules_android/issues/219 is resolved.
+common --experimental_google_legacy_api
+common --experimental_enable_android_migration_apis
