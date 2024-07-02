@@ -1,7 +1,31 @@
 module(name = "basic_example")
 
+bazel_dep(name = "platforms", version = "0.0.10")
+
 bazel_dep(name = "rules_android_ndk")
 local_path_override(
     module_name = "rules_android_ndk",
     path = "../..",
 )
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
+register_toolchains("@androidndk//:all")
+
+bazel_dep(name = "rules_android", version = "0.0.0")
+# TODO: Replace this with a released version once an updated
+# version is available on BCR.
+git_override(
+  module_name = "rules_android",
+  remote = "https://github.com/bazelbuild/rules_android",
+  commit = "1aaa03b7296e26ff2ad5a7667f6ea71fa55ca1f8",
+)
+
+register_toolchains(
+    "@rules_android//toolchains/android:android_default_toolchain",
+    "@rules_android//toolchains/android_sdk:android_sdk_tools",
+)
+
+android_sdk_repository_extension = use_extension("@rules_android//rules/android_sdk_repository:rule.bzl", "android_sdk_repository_extension")
+use_repo(android_sdk_repository_extension, "androidsdk")
+register_toolchains("@androidsdk//:sdk-toolchain", "@androidsdk//:all")
