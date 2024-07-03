@@ -15,11 +15,11 @@ register_toolchains("@androidndk//:all")
 
 # rules_android and Android SDK
 
-RULES_ANDROID_COMMIT = "1aaa03b7296e26ff2ad5a7667f6ea71fa55ca1f8"
+RULES_ANDROID_COMMIT = "e02da4d00ad81d44f1c8fd1b2ee46f057afdd392"
 
 http_archive(
     name = "rules_android",
-    sha256 = "11e4b9ed83f07df31ea5a4b46452321c214771ce0efa2c2fb368645a8677a4f7",
+    sha256 = "6f332645225c1a73b8a98136908822a25543ba21319ed5dc5c04f256e24aa8bd",
     strip_prefix = "rules_android-" + RULES_ANDROID_COMMIT,
     urls = ["https://github.com/bazelbuild/rules_android/archive/%s.zip" % RULES_ANDROID_COMMIT],
 )
