@@ -1,6 +1,6 @@
 """Declarations for the NDK's Clang directory."""
 
-load("@{repository_name}//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
+load("@@{repository_name}//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
 load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])

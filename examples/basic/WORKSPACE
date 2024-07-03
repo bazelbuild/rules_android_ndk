@@ -1,6 +1,6 @@
-android_sdk_repository(
-    name = "androidsdk",
-)
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# NDK
 
 local_repository(
     name = "rules_android_ndk",
@@ -12,3 +12,30 @@ load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
 android_ndk_repository(name = "androidndk")
 
 register_toolchains("@androidndk//:all")
+
+# rules_android and Android SDK
+
+RULES_ANDROID_COMMIT = "e02da4d00ad81d44f1c8fd1b2ee46f057afdd392"
+
+http_archive(
+    name = "rules_android",
+    sha256 = "6f332645225c1a73b8a98136908822a25543ba21319ed5dc5c04f256e24aa8bd",
+    strip_prefix = "rules_android-" + RULES_ANDROID_COMMIT,
+    urls = ["https://github.com/bazelbuild/rules_android/archive/%s.zip" % RULES_ANDROID_COMMIT],
+)
+
+load("@rules_android//:prereqs.bzl", "rules_android_prereqs")
+rules_android_prereqs()
+load("@rules_android//:defs.bzl", "rules_android_workspace")
+rules_android_workspace()
+
+load("@rules_android//rules:rules.bzl", "android_sdk_repository")
+# Requires that the ANDROID_HOME environment variable is set to the Android SDK path.
+android_sdk_repository(
+    name = "androidsdk",
+)
+
+register_toolchains(
+    "@rules_android//toolchains/android:android_default_toolchain",
+    "@rules_android//toolchains/android_sdk:android_sdk_tools",
+)
