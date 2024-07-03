@@ -30,7 +30,7 @@ def _android_ndk_repository_extension_impl(module_ctx):
     if module.tags.configure:
         kwargs["api_level"] = module.tags.configure[0].api_level
         kwargs["path"] = module.tags.configure[0].path
-        
+
     android_ndk_repository(
         name = "androidndk",
         **kwargs,
