@@ -36,3 +36,23 @@ cc_library(
     ]),
     linkopts = ["-ldl"],
 )
+
+# NOTE: New projects should use GameActivity instead.
+# https://developer.android.com/games/agdk/game-activity
+cc_library(
+    name = "native_app_glue",
+    srcs = glob([
+        "sources/android/native_app_glue/*.c",
+        # TODO(#32): Remove this hack
+        "ndk/sources/android/native_app_glue/*.c",
+    ]),
+    hdrs = glob([
+        "sources/android/native_app_glue/*.h",
+        # TODO(#32): Remove this hack
+        "ndk/sources/android/native_app_glue/*.h",
+    ]),
+)
+
+exports_files ([
+    "sources/android/native_app_glue/android_native_app_glue.h",
+])
