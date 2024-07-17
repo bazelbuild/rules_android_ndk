@@ -33,7 +33,7 @@ def _android_ndk_repository_extension_impl(module_ctx):
 
     android_ndk_repository(
         name = "androidndk",
-        **kwargs,
+        **kwargs
     )
 
 android_ndk_repository_extension = module_extension(
