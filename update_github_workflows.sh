@@ -31,8 +31,8 @@ function update_github_workflows() {
   # 'rules_mylang' for rules_android_ndk and write out the resulting file back to
   # rules_android_ndk/.github/workflows.
   for ci_file in $(ls); do
-    if [[ "$ci_file" == "ci.yaml" ]]; then
-      # Don't need ci.yaml for rules_android_ndk, since we've already set up BazelCI.
+    if [[ "$ci_file" == "ci.yaml" || "$ci_file" == "buildifier.yaml" ]]; then
+      # Don't need ci.yaml or buildifier.yaml for rules_android_ndk, since we've already set up BazelCI.
       continue
     fi
     sed "s/rules_mylang/rules_android_ndk/g" "$ci_file" > "$rules_android_ndk_workflows/$ci_file"
