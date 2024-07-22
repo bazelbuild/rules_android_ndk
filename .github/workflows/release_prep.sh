@@ -32,12 +32,12 @@ Paste this snippet into your \`WORKSPACE.bazel\` file:
 \`\`\`starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
-    name = "com_myorg_rules_android_ndk",
+    name = "rules_android_ndk",
     sha256 = "${SHA}",
     strip_prefix = "${PREFIX}",
     url = "https://github.com/myorg/rules_android_ndk/releases/download/${TAG}/${ARCHIVE}",
 )
 EOF
 
-awk 'f;/--SNIP--/{f=1}' e2e/smoke/WORKSPACE.bazel
+awk 'f;/--SNIP--/{f=1}' examples/basic/WORKSPACE
 echo "\`\`\`" 

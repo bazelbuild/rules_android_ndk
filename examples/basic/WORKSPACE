@@ -1,5 +1,3 @@
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 # NDK
 
 local_repository(
@@ -7,13 +5,9 @@ local_repository(
     path = "../..",
 )
 
-load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
-
-android_ndk_repository(name = "androidndk")
-
-register_toolchains("@androidndk//:all")
-
 # rules_android and Android SDK
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_ANDROID_COMMIT = "dd7b90c91fdc4edeca90ba9ebffa3c469b426a35"
 
@@ -43,3 +37,11 @@ register_toolchains(
     "@rules_android//toolchains/android:android_default_toolchain",
     "@rules_android//toolchains/android_sdk:android_sdk_tools",
 )
+
+# --SNIP--
+load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+
+android_ndk_repository(name = "androidndk")
+
+register_toolchains("@androidndk//:all")
+
