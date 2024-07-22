@@ -16,3 +16,4 @@ jobs:
     uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v6
     with:
       release_files: rules_android_ndk-*.tar.gz
+      bazel_test_command: "cd examples/basic && bazel build java/com/app --android_platforms=//:arm64-v8a"
