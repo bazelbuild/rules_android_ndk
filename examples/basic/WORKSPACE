@@ -38,7 +38,7 @@ register_toolchains(
     "@rules_android//toolchains/android_sdk:android_sdk_tools",
 )
 
-# --SNIP--
+# --SNIP--: Everything below this lines goes into the example WORKSPACE snippet in the release notes.
 load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
 
 android_ndk_repository(name = "androidndk")
