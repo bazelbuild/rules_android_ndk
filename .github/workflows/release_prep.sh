@@ -22,7 +22,7 @@ cat << EOF
 2. Add to your \`MODULE.bazel\` file:
 
 \`\`\`starlark
-bazel_dep(name = "com_myorg_rules_android_ndk", version = "${TAG:1}")
+bazel_dep(name = "rules_android_ndk", version = "${TAG:1}")
 \`\`\`
 
 ## Using WORKSPACE
@@ -35,7 +35,7 @@ http_archive(
     name = "rules_android_ndk",
     sha256 = "${SHA}",
     strip_prefix = "${PREFIX}",
-    url = "https://github.com/myorg/rules_android_ndk/releases/download/${TAG}/${ARCHIVE}",
+    url = "https://github.com/bazelbuild/rules_android_ndk/releases/download/${TAG}/${ARCHIVE}",
 )
 EOF
 
