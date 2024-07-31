@@ -32,7 +32,7 @@ def _android_ndk_repository_impl(ctx):
         executable = False,
     )
 
-    ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
+    ndk_path = ctx.attr.path or ctx.getenv("ANDROID_NDK_HOME", None)
     if not ndk_path:
         ctx.template(
             "BUILD.bazel",
