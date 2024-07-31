@@ -1,0 +1,13 @@
+module(name = "basic_example")
+
+bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "rules_android_ndk")
+local_path_override(
+    module_name = "rules_android_ndk",
+    path = "../..",
+)
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
+
+register_toolchains("@androidndk//:all")

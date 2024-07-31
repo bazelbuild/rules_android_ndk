@@ -40,6 +40,12 @@ def _android_ndk_repository_impl(ctx):
             {},
             executable = False,
         )
+        ctx.template(
+            "dummy_cc_toolchain.bzl",
+            ctx.attr._template_dummy_cc_toolchain,
+            {},
+            executable = False,
+        )
         return
 
     if ndk_path.startswith("$WORKSPACE_ROOT"):
@@ -141,6 +147,7 @@ android_ndk_repository = repository_rule(
         "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
         "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
         "_template_empty_repository": attr.label(default = ":BUILD.empty.tpl", allow_single_file = True),
+        "_template_dummy_cc_toolchain": attr.label(default = ":dummy_cc_toolchain.bzl.tpl", allow_single_file = True),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
