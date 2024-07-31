@@ -41,6 +41,12 @@ macos: &macos
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
+windows: &windows
+  platform: windows
+  environment:
+    ANDROID_NDK_HOME: c:/android_ndk/r25b
+    BAZELCI_LOCAL_RUN: true
+
 tasks:
   basic_example_ubuntu2004:
     name: Basic Example
@@ -54,6 +60,13 @@ tasks:
   basic_example_bzlmod_macos:
     name: Basic Example Bzlmod
     <<: [*macos, *basic_example_bzlmod]
+  basic_example_windows:
+    name: Basic Example
+    <<: [*windows, *basic_example]
+  basic_example_bzlmod_windows:
+    name: Basic Example Bzlmod
+    <<: [*windows, *basic_example_bzlmod]
+
 
   cpu_features_ubuntu2004:
     name: CPU Features

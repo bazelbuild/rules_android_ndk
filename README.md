@@ -7,7 +7,7 @@ Android NDK. These rules currently work with Android NDK version 25b.
 
 NOTE: This is a development preview of the Starlark Android NDK Bazel
 rules. These rules are not guaranteed to be complete or work for every
-NDK use case. Bazel versions up to and including 6.0.0 contain a
+NDK use case. Bazel versions up to and including 7.0.0 contain a
 built-in ("native") version of `android_ndk_repository` described at
 https://bazel.build/reference/be/android#android_ndk_repository. Over
 time, these Starlark rules will replace the native version of
@@ -36,7 +36,8 @@ To use the Android NDK rules, add the following to your `WORKSPACE` file:
 
 Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
 `android_ndk_repository` to the path of the local Android NDK installation
-directory.
+directory. If the path starts with `$WORKSPACE_ROOT`, then this string is
+replaced with the root path of the Bazel workspace.
 
 The `api_level` attribute can also be used to set the Android API level to build
 against.
@@ -54,7 +55,7 @@ CPUs:
     x86
     x86_64
 
-e.g. `--fat_apk_cpu=arm64-v7a` or `--fat_apk_cpu=arm64-v7a,x86`.
+e.g. `--fat_apk_cpu=arm64-v8a` or `--fat_apk_cpu=arm64-v8a,x86`.
 
 These flags may also be added to the your project's `.bazelrc` file so that they
 don't have to be specified on the command line.

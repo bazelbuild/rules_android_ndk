@@ -1,3 +1,5 @@
+load("@rules_android//rules:rules.bzl", "android_binary", "android_library")
+
 android_binary(
     name = "app",
     manifest = "AndroidManifest.xml",
@@ -29,4 +31,5 @@ cc_library(
     name = "jni_dep",
     srcs = ["jni_dep.cc"],
     hdrs = ["jni_dep.h"],
+    linkopts = ["-llog"],
 )
