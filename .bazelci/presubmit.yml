@@ -19,8 +19,6 @@ basic_example_bzlmod: &basic_example_bzlmod
     - "--incompatible_disallow_empty_glob"
     - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
-    - "--enable_bzlmod=True"
-    - "--enable_workspace=False"
   build_targets:
     - "//java/com/app:app"
 
@@ -30,6 +28,7 @@ cpu_features: &cpu_features
     - "--incompatible_disallow_empty_glob"
     - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
+    - "--enable_workspace=True"
   build_targets:
     - "//:all"
 
