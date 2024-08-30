@@ -1,0 +1,5 @@
+# TODO: Remove once https://github.com/bazelbuild/rules_android/issues/219 is resolved.
+common --experimental_google_legacy_api
+common --experimental_enable_android_migration_apis
+
+common --android_sdk=@androidsdk//:sdk
