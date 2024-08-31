@@ -23,10 +23,31 @@ def _android_ndk_repository_impl(ctx):
     Returns:
         A final dict of configuration attributes and values.
     """
-    ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
+
+    ctx.template(
+        "target_systems.bzl",
+        ctx.attr._template_target_systems,
+        {
+        },
+        executable = False,
+    )
+
+    ndk_path = ctx.attr.path or ctx.getenv("ANDROID_NDK_HOME", None)
     if not ndk_path:
-        fail("Either the ANDROID_NDK_HOME environment variable or the " +
-             "path attribute of android_ndk_repository must be set.")
+        ctx.template(
+            "BUILD.bazel",
+            ctx.attr._template_empty_repository,
+            {},
+            executable = False,
+        )
+        ctx.template(
+            "dummy_cc_toolchain.bzl",
+            ctx.attr._template_dummy_cc_toolchain,
+            {},
+            executable = False,
+        )
+        return
+
     if ndk_path.startswith("$WORKSPACE_ROOT"):
         ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
 
@@ -67,14 +88,6 @@ def _android_ndk_repository_impl(ctx):
         ctx.attr._template_ndk_root,
         {
             "{clang_directory}": clang_directory,
-        },
-        executable = False,
-    )
-
-    ctx.template(
-        "target_systems.bzl",
-        ctx.attr._template_target_systems,
-        {
         },
         executable = False,
     )
@@ -133,6 +146,8 @@ android_ndk_repository = repository_rule(
         "_template_target_systems": attr.label(default = ":target_systems.bzl.tpl", allow_single_file = True),
         "_template_ndk_clang": attr.label(default = ":BUILD.ndk_clang.tpl", allow_single_file = True),
         "_template_ndk_sysroot": attr.label(default = ":BUILD.ndk_sysroot.tpl", allow_single_file = True),
+        "_template_empty_repository": attr.label(default = ":BUILD.empty.tpl", allow_single_file = True),
+        "_template_dummy_cc_toolchain": attr.label(default = ":dummy_cc_toolchain.bzl.tpl", allow_single_file = True),
     },
     local = True,
     implementation = _android_ndk_repository_impl,
