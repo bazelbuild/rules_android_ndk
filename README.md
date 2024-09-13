@@ -57,7 +57,7 @@ CPUs:
 
 e.g. `--fat_apk_cpu=arm64-v8a` or `--fat_apk_cpu=arm64-v8a,x86`.
 
-These flags may also be added to the your project's `.bazelrc` file so that they
+These flags may also be added to your project's `.bazelrc` file so that they
 don't have to be specified on the command line.
 
 See the example in https://github.com/bazelbuild/rules_android_ndk/tree/main/examples/basic.
