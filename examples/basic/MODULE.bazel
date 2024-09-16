@@ -18,7 +18,7 @@ bazel_dep(name = "rules_android", version = "0.0.0")
 # version is available on BCR.
 git_override(
     module_name = "rules_android",
-    commit = "dd7b90c91fdc4edeca90ba9ebffa3c469b426a35",
+    commit = "57bed3f556c698b0a0e692f729ed7edfd804db98",
     remote = "https://github.com/bazelbuild/rules_android",
 )
 
