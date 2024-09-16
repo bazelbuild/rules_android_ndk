@@ -9,11 +9,11 @@ local_repository(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULES_ANDROID_COMMIT = "dd7b90c91fdc4edeca90ba9ebffa3c469b426a35"
+RULES_ANDROID_COMMIT = "57bed3f556c698b0a0e692f729ed7edfd804db98"
 
 http_archive(
     name = "rules_android",
-    sha256 = "d0b310dd23442b8ff024cba73ad7564024b473673d8d5de7d01bd91adb9aa2d0",
+    sha256 = "e1ee3cd26581bd563f8087a9d325b97f130ab26cd5dede7139340603a93223d5",
     strip_prefix = "rules_android-" + RULES_ANDROID_COMMIT,
     urls = ["https://github.com/bazelbuild/rules_android/archive/%s.zip" % RULES_ANDROID_COMMIT],
 )
