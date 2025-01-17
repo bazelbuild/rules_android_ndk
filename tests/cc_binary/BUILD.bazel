@@ -1,0 +1,16 @@
+# This tests that we can build this target for the host platform without
+# having to provide a path to the Android NDK.
+cc_binary(
+    name = "hello-world",
+    srcs = ["main.c"],
+)
+
+# when using this platform, we can test whether the invocation
+# fails or succeeds depending on the value of ANDROID_NDK_HOME
+platform(
+    name = "arm64-v8a",
+    constraint_values = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:android",
+    ],
+)
