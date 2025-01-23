@@ -1,4 +1,5 @@
 load("@rules_android//rules:rules.bzl", "android_binary", "android_library")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 
 android_binary(
     name = "app",

@@ -1,3 +1,5 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+
 platform(
     name = "arm64-v8a",
     constraint_values = [
