@@ -1,2 +1,4 @@
 # Ignore bazel convenience symlinks.
 bazel-*
+
+MODULE.bazel.lock
