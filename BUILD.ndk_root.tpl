@@ -1,8 +1,9 @@
 """Top-level aliases."""
 
-package(default_visibility = ["//visibility:public"])
-
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
+
+package(default_visibility = ["//visibility:public"])
 
 exports_files(["target_systems.bzl"])
 
@@ -14,12 +15,12 @@ alias(
 # Loop over TARGET_SYSTEM_NAMES and define all toolchain targets.
 [toolchain(
     name = "toolchain_%s" % target_system_name,
-    toolchain = "//{clang_directory}:cc_toolchain_%s" % target_system_name,
-    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     target_compatible_with = [
         "@platforms//os:android",
         CPU_CONSTRAINT[target_system_name],
     ],
+    toolchain = "//{clang_directory}:cc_toolchain_%s" % target_system_name,
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 cc_library(
@@ -53,6 +54,6 @@ cc_library(
     ]),
 )
 
-exports_files ([
+exports_files([
     "sources/android/native_app_glue/android_native_app_glue.h",
 ])
