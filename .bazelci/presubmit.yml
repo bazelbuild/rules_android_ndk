@@ -4,7 +4,8 @@ matrix:
   bazel: [
     7.4.1,
     8.0.0,
-    last_green,
+# TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
+#    last_green,
   ]
 
 basic_example: &basic_example
