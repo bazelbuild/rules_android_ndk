@@ -88,6 +88,7 @@ def _android_ndk_repository_impl(ctx):
             "{clang_resource_directory}": clang_resource_directory,
             "{sysroot_directory}": sysroot_directory,
             "{executable_extension}": executable_extension,
+            "{ndk_path}": ndk_path,
         },
         executable = False,
     )

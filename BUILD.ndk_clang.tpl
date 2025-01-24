@@ -41,6 +41,7 @@ cc_toolchain_suite(
     target_system_name = target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
     executable_extension = "{executable_extension}",
+    ndk_path = "{ndk_path}",
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 filegroup(
