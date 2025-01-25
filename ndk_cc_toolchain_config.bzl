@@ -1442,8 +1442,6 @@ def ndk_cc_toolchain_config(
         ),
     ]
 
-    print(config)
-
     return dict(
         action_configs = action_configs,
         features = features,
