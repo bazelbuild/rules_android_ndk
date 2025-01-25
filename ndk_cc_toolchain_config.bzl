@@ -1442,6 +1442,8 @@ def ndk_cc_toolchain_config(
         ),
     ]
 
+    print(config)
+
     return dict(
         action_configs = action_configs,
         features = features,
@@ -1472,11 +1474,11 @@ def ndk_cc_toolchain_config_rule_implementation(ctx):
                 "strip": ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/bin/llvm-strip" + ctx.attr.executable_extension,
             },
             cxx_builtin_include_directories = [
-                "sysroot/usr/include/c++/v1",
-                "sysroot/usr/local/include",
-                ctx.attr.clang_resource_directory,
-                "sysroot/usr/include/%s" % ctx.attr.target_system_name,
-                "sysroot/usr/include",
+                ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/sysroot/usr/include/c++/v1",
+                ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/sysroot/usr/local/include",
+                ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/" + ctx.attr.clang_resource_directory,
+                ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/sysroot/usr/include/%s" % ctx.attr.target_system_name,
+                ctx.attr.ndk_path + "/" + ctx.attr.clang_directory + "/sysroot/usr/include",
             ],
             toolchain_identifier = ctx.attr.toolchain_identifier,
             target_cpu = {
