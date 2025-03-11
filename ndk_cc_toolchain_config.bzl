@@ -27,6 +27,7 @@ load(
     "with_feature_set",
     flag_set_ = "flag_set",
 )
+load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 
 def ndk_cc_toolchain_config(
         api_level,
