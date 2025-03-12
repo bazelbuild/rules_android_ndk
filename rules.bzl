@@ -24,6 +24,7 @@ def _android_ndk_repository_impl(ctx):
         A final dict of configuration attributes and values.
     """
     ndk_path = ctx.attr.path or ctx.os.environ.get("ANDROID_NDK_HOME", None)
+    ndk_path = ndk_path.replace("\\", "/")
     if not ndk_path:
         fail("Either the ANDROID_NDK_HOME environment variable or the " +
              "path attribute of android_ndk_repository must be set.")
