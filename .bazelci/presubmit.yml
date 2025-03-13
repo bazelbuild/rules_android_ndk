@@ -35,6 +35,7 @@ cpu_features: &cpu_features
     - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
     - "--enable_workspace=True"
+    - "--noenable_bzlmod"
   build_targets:
     - "//:all"
 
