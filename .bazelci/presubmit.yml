@@ -39,6 +39,17 @@ cpu_features: &cpu_features
   build_targets:
     - "//:all"
 
+cpu_features: &cpu_features_bzlmod
+  working_directory: examples/cpu_features
+  build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
+    - "--platforms=//:arm64-v8a"
+    - "--enable_bzlmod"
+    - "--noenable_workspace"
+  build_targets:
+    - "//:all"
+
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
   environment:
@@ -93,13 +104,9 @@ tasks:
   cpu_features_ubuntu2004_bzlmod:
     name: CPU Features
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *cpu_features]
-    - "--noenable_workspace"
-    - "--enable_bzlmod"
+    <<: [*ubuntu2004, *cpu_features_bzlmod]
   cpu_features_macos_bzlmod:
     name: CPU Features
     bazel: ${{ bazel }}
-    <<: [*macos, *cpu_features]
-    - "--noenable_workspace"
-    - "--enable_bzlmod"
+    <<: [*macos, *cpu_features_bzlmod]
 
