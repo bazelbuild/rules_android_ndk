@@ -1,0 +1,14 @@
+module(name = "cpu_features")
+
+bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "rules_cc", version = "0.0.17")
+bazel_dep(name = "rules_android_ndk", version = "0.1.3")
+local_path_override(
+    module_name = "rules_android_ndk",
+    path = "../..",
+)
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
+
+register_toolchains("@androidndk//:all")
