@@ -38,6 +38,16 @@ cpu_features: &cpu_features
   build_targets:
     - "//:all"
 
+cpu_features_bzlmod: &cpu_features
+  working_directory: examples/cpu_features
+  build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
+    - "--platforms=//:arm64-v8a"
+    - "--enable_workspace=False"
+  build_targets:
+    - "//:all"
+
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
   environment:
