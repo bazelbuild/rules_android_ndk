@@ -16,7 +16,7 @@ filegroup(
         "usr/lib/{target_system_name}/{api_level}/*".format(
             target_system_name = target_system_name,
         ),
-    ]),
+    ], allow_empty = True),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 [filegroup(
