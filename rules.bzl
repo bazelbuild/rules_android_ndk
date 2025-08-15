@@ -104,6 +104,7 @@ def _android_ndk_repository_impl(ctx):
 # Manually create a partial symlink tree of the NDK to avoid creating BUILD
 # files in the real NDK directory.
 def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
+    ndk_path = str(ndk_path).replace("\\", "/")
     # Path needs to end in "/" for replace() below to work
     if not ndk_path.endswith("/"):
         ndk_path = ndk_path + "/"
