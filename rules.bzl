@@ -75,6 +75,7 @@ def _android_ndk_repository_impl(ctx):
         "target_systems.bzl",
         ctx.attr._template_target_systems,
         {
+            "{api_level}": str(api_level),
         },
         executable = False,
     )
