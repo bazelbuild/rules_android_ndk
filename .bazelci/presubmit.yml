@@ -2,11 +2,16 @@
 buildifier: latest
 matrix:
   bazel: [
-    7.4.1,
-    8.0.0,
-# TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
-#    last_green,
+    7.x,
+    8.x,
+    9.*
   ]
+
+# WORKSPACE is only supported in Bazel 7.x and 8.x (removed in 9.x)
+matrix_workspace: &matrix_workspace
+  bazel: ${{ bazel }}
+  matrix:
+    bazel: [7.x, 8.x]
 
 basic_example: &basic_example
   working_directory: examples/basic
@@ -34,17 +39,27 @@ cpu_features: &cpu_features
     - "--incompatible_disallow_empty_glob"
     - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
+    - "--enable_bzlmod=False"
     - "--enable_workspace=True"
   build_targets:
     - "//:all"
 
-ubuntu2004: &ubuntu2004
-  platform: ubuntu2004
+cpu_features_bzlmod: &cpu_features_bzlmod
+  working_directory: examples/cpu_features
+  build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
+    - "--platforms=//:arm64-v8a"
+  build_targets:
+    - "//:all"
+
+ubuntu2404: &ubuntu2404
+  platform: ubuntu2404
   environment:
     ANDROID_NDK_HOME: /opt/android-ndk-r25b
 
 macos: &macos
-  platform: macos
+  platform: macos_arm64
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
@@ -55,37 +70,40 @@ windows: &windows
     BAZELCI_LOCAL_RUN: true
 
 tasks:
-  basic_example_ubuntu2004:
-    name: Basic Example
-    bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *basic_example]
-  basic_example_bzlmod_ubuntu2004:
+  basic_example_ubuntu2404:
+    name: Basic Example (WORKSPACE)
+    <<: [*matrix_workspace, *ubuntu2404, *basic_example]
+  basic_example_bzlmod_ubuntu2404:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *basic_example_bzlmod]
+    <<: [*ubuntu2404, *basic_example_bzlmod]
   basic_example_macos:
-    name: Basic Example
-    bazel: ${{ bazel }}
-    <<: [*macos, *basic_example]
+    name: Basic Example (WORKSPACE)
+    <<: [*matrix_workspace, *macos, *basic_example]
   basic_example_bzlmod_macos:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
     <<: [*macos, *basic_example_bzlmod]
   basic_example_windows:
-    name: Basic Example
-    bazel: ${{ bazel }}
-    <<: [*windows, *basic_example]
+    name: Basic Example (WORKSPACE)
+    <<: [*matrix_workspace, *windows, *basic_example]
   basic_example_bzlmod_windows:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
     <<: [*windows, *basic_example_bzlmod]
 
 
-  cpu_features_ubuntu2004:
-    name: CPU Features
+  cpu_features_ubuntu2404:
+    name: CPU Features (WORKSPACE)
+    <<: [*matrix_workspace, *ubuntu2404, *cpu_features]
+  cpu_features_bzlmod_ubuntu2404:
+    name: CPU Features Bzlmod
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *cpu_features]
+    <<: [*ubuntu2404, *cpu_features_bzlmod]
   cpu_features_macos:
-    name: CPU Features
+    name: CPU Features (WORKSPACE)
+    <<: [*matrix_workspace, *macos, *cpu_features]
+  cpu_features_bzlmod_macos:
+    name: CPU Features Bzlmod
     bazel: ${{ bazel }}
-    <<: [*macos, *cpu_features]
+    <<: [*macos, *cpu_features_bzlmod]

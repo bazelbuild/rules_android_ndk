@@ -25,6 +25,7 @@ android_library(
 cc_library(
     name = "jni",
     srcs = ["jni.cc"],
+    target_compatible_with = ["@platforms//os:android"],
     deps = [":jni_dep"],
 )
 
@@ -33,4 +34,5 @@ cc_library(
     srcs = ["jni_dep.cc"],
     hdrs = ["jni_dep.h"],
     linkopts = ["-llog"],
+    target_compatible_with = ["@platforms//os:android"],
 )
