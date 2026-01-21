@@ -4,7 +4,7 @@ matrix:
   bazel: [
     7.x,
     8.x,
-    9.*
+    9.x
   ]
 
 # WORKSPACE is only supported in Bazel 7.x and 8.x (removed in 9.x)
@@ -16,8 +16,6 @@ matrix_workspace: &matrix_workspace
 basic_example: &basic_example
   working_directory: examples/basic
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=False"
     - "--enable_workspace=True"
@@ -27,8 +25,6 @@ basic_example: &basic_example
 basic_example_bzlmod: &basic_example_bzlmod
   working_directory: examples/basic
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
   build_targets:
     - "//java/com/app:app"
@@ -36,8 +32,6 @@ basic_example_bzlmod: &basic_example_bzlmod
 cpu_features: &cpu_features
   working_directory: examples/cpu_features
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
     - "--enable_bzlmod=False"
     - "--enable_workspace=True"
@@ -47,8 +41,6 @@ cpu_features: &cpu_features
 cpu_features_bzlmod: &cpu_features_bzlmod
   working_directory: examples/cpu_features
   build_flags:
-    - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
   build_targets:
     - "//:all"
