@@ -5,12 +5,13 @@
 
     <uses-sdk
         android:minSdkVersion="21"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="34" />
 
     <application android:label="Bazel Test App" >
         <activity
             android:name="com.app.MainActivity"
-            android:label="Bazel Test App" >
+            android:label="Bazel Test App"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
