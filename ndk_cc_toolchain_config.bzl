@@ -796,7 +796,7 @@ def ndk_cc_toolchain_config(
                         "-Wformat-security",
                         "-Wno-char-subscripts",
                         "-Wno-error=deprecated-declarations",
-                        "-Wno-maybe-uninitialized",
+                        "-Wno-uninitialized",
                         "-Wno-sign-compare",
                         "-Wno-strict-overflow",
                         "-Wno-unused-but-set-variable",
