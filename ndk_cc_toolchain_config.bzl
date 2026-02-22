@@ -934,8 +934,8 @@ def ndk_cc_toolchain_config(
                         "-Wl,--exclude-libs,libgcc.a",
                         "-Wl,--build-id=md5",
                         # Force JNI symbols to be linked.
-                        "-Wl,--undefined-glob='Java_*'",
-                        "-Wl,--undefined-glob='JNI_*'",
+                        "-Wl,--undefined-glob=Java_*",
+                        "-Wl,--undefined-glob=JNI_*",
                         # 16KB page alignment for Android 15+ compatibility
                         "-Wl,-z,max-page-size=16384",
                         "-Wl,-z,common-page-size=16384",
