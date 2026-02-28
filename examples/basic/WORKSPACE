@@ -5,15 +5,38 @@ local_repository(
     path = "../..",
 )
 
-# rules_android and Android SDK
-
+##### rules_cc setup #####
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
+    name = "bazel_features",
+    sha256 = "5d7bd1c44051cca8a9e0842eda9a5c223f2cb7264202022ff20ee77dcb3fb275",
+    strip_prefix = "bazel_features-1.42.0",
+    url = "https://github.com/bazel-contrib/bazel_features/releases/download/v1.42.0/bazel_features-v1.42.0.tar.gz",
+)
+
+load("@bazel_features//:deps.bzl", "bazel_features_deps")
+
+bazel_features_deps()
+
+http_archive(
+    name = "rules_cc",
+    sha256 = "8dcd63392f0bb48adf74f413a9f39ba0fedcb8f99bf085a3b450f06d171dbb6d",
+    strip_prefix = "rules_cc-0.2.4",
+    url = "https://github.com/bazelbuild/rules_cc/releases/download/0.2.4/rules_cc-0.2.4.tar.gz",
+)
+
+load("@rules_cc//cc:extensions.bzl", "compatibility_proxy_repo")
+
+compatibility_proxy_repo()
+
+# rules_android and Android SDK
+
+http_archive(
     name = "rules_android",
-    sha256 = "af84b69ab3d16dd1a41056286e6511f147a94ccea995603e13e934c915c1631c",
-    strip_prefix = "rules_android-0.6.0",
-    url = "https://github.com/bazelbuild/rules_android/releases/download/v0.6.0/rules_android-v0.6.0.tar.gz",
+    sha256 = "7c45b6aaa837fb6f2f23ad11387638cb00fa9f839a04ec564caac70a543a9cd5",
+    strip_prefix = "rules_android-0.7.1",
+    url = "https://github.com/bazelbuild/rules_android/releases/download/v0.7.1/rules_android-v0.7.1.tar.gz",
 )
 
 # Android rules dependencies
@@ -61,14 +84,6 @@ android_sdk_repository(
 register_toolchains(
     "@rules_android//toolchains/android:android_default_toolchain",
     "@rules_android//toolchains/android_sdk:android_sdk_tools",
-)
-
-##### rules_cc setup #####
-http_archive(
-    name = "rules_cc",
-    sha256 = "abc605dd850f813bb37004b77db20106a19311a96b2da1c92b789da529d28fe1",
-    strip_prefix = "rules_cc-0.0.17",
-    urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.17/rules_cc-0.0.17.tar.gz"],
 )
 
 # --SNIP--: Everything below this lines goes into the example WORKSPACE snippet in the release notes.

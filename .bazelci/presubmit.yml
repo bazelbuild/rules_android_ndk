@@ -2,10 +2,9 @@
 buildifier: latest
 matrix:
   bazel: [
-    7.4.1,
-    8.0.0,
-# TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
-#    last_green,
+    7.x,
+    8.x,
+    9.x,
   ]
 
 basic_example: &basic_example
@@ -43,8 +42,13 @@ ubuntu2004: &ubuntu2004
   environment:
     ANDROID_NDK_HOME: /opt/android-ndk-r25b
 
-macos: &macos
+macos_intel: &macos_intel
   platform: macos
+  environment:
+    ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
+
+macos: &macos
+  platform: macos_arm64
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
@@ -63,6 +67,10 @@ tasks:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
     <<: [*ubuntu2004, *basic_example_bzlmod]
+  basic_example_macos_intel:
+    name: Basic Example
+    bazel: ${{ bazel }}
+    <<: [*macos_intel, *basic_example]
   basic_example_macos:
     name: Basic Example
     bazel: ${{ bazel }}
