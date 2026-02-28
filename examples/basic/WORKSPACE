@@ -72,8 +72,8 @@ http_archive(
 )
 
 # --SNIP--: Everything below this lines goes into the example WORKSPACE snippet in the release notes.
-load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
+load("@rules_android_ndk//:rules.bzl", "local_android_ndk_repository")
 
-android_ndk_repository(name = "androidndk")
+local_android_ndk_repository(name = "androidndk")
 
 register_toolchains("@androidndk//:all")

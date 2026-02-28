@@ -1,1 +1,7 @@
-# Do not remove, this empty BUILD file is necessary for _android_ndk_repository_impl in rules.bzl.
+# Note that this BUILD file is necessary for `android_ndk_repository` in `rules.bzl`.
+
+exports_files([
+    "LICENSE",
+] + glob([
+    "*.tpl",
+]))
