@@ -3,7 +3,7 @@ buildifier: latest
 matrix:
   bazel: [
     7.4.1,
-    8.0.0,
+    8.6.0,
 # TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
 #    last_green,
   ]
@@ -48,6 +48,11 @@ macos: &macos
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
+macos: &macos_arm64
+  platform: macos_arm64
+  environment:
+    ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
+
 windows: &windows
   platform: windows
   environment:
@@ -70,7 +75,7 @@ tasks:
   basic_example_bzlmod_macos:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
-    <<: [*macos, *basic_example_bzlmod]
+    <<: [*macos_arm64, *basic_example_bzlmod]
   basic_example_windows:
     name: Basic Example
     bazel: ${{ bazel }}
