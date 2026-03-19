@@ -48,6 +48,11 @@ macos: &macos
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
 
+macos: &macos_arm64
+  platform: macos_arm64
+  environment:
+    ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
+
 windows: &windows
   platform: windows
   environment:
