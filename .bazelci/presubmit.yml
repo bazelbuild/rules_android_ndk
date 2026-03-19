@@ -3,7 +3,7 @@ buildifier: latest
 matrix:
   bazel: [
     7.4.1,
-    8.0.0,
+    8.6.0,
 # TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
 #    last_green,
   ]
