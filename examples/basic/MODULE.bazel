@@ -2,7 +2,7 @@ module(name = "basic_example")
 
 bazel_dep(name = "platforms", version = "0.0.10")
 bazel_dep(name = "rules_cc", version = "0.0.17")
-bazel_dep(name = "rules_android_ndk", version = "0.1.4")
+bazel_dep(name = "rules_android_ndk", version = "0.1.6")
 local_path_override(
     module_name = "rules_android_ndk",
     path = "../..",
