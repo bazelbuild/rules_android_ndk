@@ -14,7 +14,7 @@
 
 """A bzlmod extension for loading the NDK."""
 
-load(":rules.bzl", "DEFAULT_API_LEVEL", "local_android_ndk_repository")
+load(":rules.bzl", "DEFAULT_API_LEVEL", "android_ndk_repository")
 
 def _android_ndk_repository_extension_impl(module_ctx):
     root_modules = [m for m in module_ctx.modules if m.is_root and m.tags.configure]
@@ -31,7 +31,7 @@ def _android_ndk_repository_extension_impl(module_ctx):
         kwargs["api_level"] = module.tags.configure[0].api_level
         kwargs["path"] = module.tags.configure[0].path
 
-    local_android_ndk_repository(
+    android_ndk_repository(
         name = "androidndk",
         **kwargs
     )

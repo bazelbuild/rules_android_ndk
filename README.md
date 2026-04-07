@@ -102,15 +102,15 @@ http_archive(
     urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.17/rules_cc-0.0.17.tar.gz"],
 )
 
-load("@rules_android_ndk//:rules.bzl", "local_android_ndk_repository")
+load("@rules_android_ndk//:rules.bzl", "android_ndk_repository")
 
-local_android_ndk_repository(name = "androidndk")
+android_ndk_repository(name = "androidndk")
 
 register_toolchains("@androidndk//:all")
 ```
 
 Then, set the `ANDROID_NDK_HOME` environment variable or the `path` attribute of
-`local_android_ndk_repository` to the path of the local Android NDK installation
+`android_ndk_repository` to the path of the local Android NDK installation
 directory. If the path starts with `$WORKSPACE_ROOT`, then this string is
 replaced with the root path of the Bazel workspace.
 
