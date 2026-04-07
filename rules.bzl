@@ -180,14 +180,14 @@ _COMMON_ATTR = {
     ),
 }
 
-def _exec_android_ndk_repository_impl(ctx):
+def _exec_configuration_android_ndk_repository_impl(ctx):
     ndk_path = ctx.path(Label(ctx.attr.anchor)).dirname
 
     return _android_ndk_repository_impl(ctx, ndk_path)
 
-exec_android_ndk_repository = repository_rule(
+exec_configuration_android_ndk_repository = repository_rule(
     doc = "A repository rule that integrates the Android NDK from a workspace. Uses an anchor label to locate the NDK and requires the host platform and Clang resource directory to be specified. For local NDK installations, use android_ndk_repository instead.",
-    implementation = _exec_android_ndk_repository_impl,
+    implementation = _exec_configuration_android_ndk_repository_impl,
     attrs = _COMMON_ATTR | {
         "anchor": attr.string(
             doc = "A label to a file in the NDK directory. The directory containing this file is used as the NDK root path.",
