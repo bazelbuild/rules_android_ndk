@@ -48,7 +48,7 @@ def _get_clang_resource_dir(ctx, clang_directory, is_windows):
         stdout = stdout.replace("\\", "/")
     return stdout.split(clang_directory)[1].strip("/")
 
-def _android_ndk_repository_impl(ctx, ndk_path = None):
+def _android_ndk_repository_impl(ctx, ndk_path):
     """Install the Android NDK files.
 
     Args:
@@ -58,12 +58,6 @@ def _android_ndk_repository_impl(ctx, ndk_path = None):
     Returns:
         A final dict of configuration attributes and values.
     """
-    if ndk_path == None:
-        ndk_path = ctx.path(Label(ctx.attr.anchor)).dirname
-
-    if ndk_path.startswith("$WORKSPACE_ROOT"):
-        ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
-
     is_windows = False
     executable_extension = ""
     exec_compatible_with = None
@@ -187,7 +181,9 @@ _COMMON_ATTR = {
 }
 
 def _remote_android_ndk_repository_impl(ctx):
-    return _android_ndk_repository_impl(ctx, None)
+    ndk_path = ctx.path(Label(ctx.attr.anchor)).dirname
+
+    return _android_ndk_repository_impl(ctx, ndk_path)
 
 remote_android_ndk_repository = repository_rule(
     doc = "A repository rule that integrates the Android NDK from a workspace. Uses an anchor label to locate the NDK and requires the host platform and Clang resource directory to be specified. For local NDK installations, use local_android_ndk_repository instead.",
@@ -214,6 +210,9 @@ def _local_android_ndk_repository_impl(ctx):
     if not ndk_path:
         fail("Either the ANDROID_NDK_HOME environment variable or the " +
              "path attribute of android_ndk_repository must be set.")
+
+    if ndk_path.startswith("$WORKSPACE_ROOT"):
+        ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
 
     return _android_ndk_repository_impl(ctx, ndk_path)
 
