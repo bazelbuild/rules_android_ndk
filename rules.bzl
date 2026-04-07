@@ -48,7 +48,7 @@ def _get_clang_resource_dir(ctx, clang_directory, is_windows):
         stdout = stdout.replace("\\", "/")
     return stdout.split(clang_directory)[1].strip("/")
 
-def _android_ndk_repository_impl(ctx, ndk_path):
+def _android_ndk_repository_common(ctx, ndk_path):
     """Install the Android NDK files.
 
     Args:
@@ -183,7 +183,7 @@ _COMMON_ATTR = {
 def _exec_configuration_android_ndk_repository_impl(ctx):
     ndk_path = ctx.path(Label(ctx.attr.anchor)).dirname
 
-    return _android_ndk_repository_impl(ctx, ndk_path)
+    return _android_ndk_repository_common(ctx, ndk_path)
 
 exec_configuration_android_ndk_repository = repository_rule(
     doc = "A repository rule that integrates the Android NDK from a workspace. Uses an anchor label to locate the NDK and requires the host platform and Clang resource directory to be specified. For local NDK installations, use android_ndk_repository instead.",
@@ -214,7 +214,7 @@ def _android_ndk_repository_impl(ctx):
     if ndk_path.startswith("$WORKSPACE_ROOT"):
         ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
 
-    return _android_ndk_repository_impl(ctx, ndk_path)
+    return _android_ndk_repository_common(ctx, ndk_path)
 
 android_ndk_repository = repository_rule(
     doc = "A repository rule that integrates the Android NDK from a local path. Uses ANDROID_NDK_HOME environment variable or the path attribute. This is the rule used by the bzlmod extension.",
