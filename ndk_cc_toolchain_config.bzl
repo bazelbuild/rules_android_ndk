@@ -768,11 +768,6 @@ def ndk_cc_toolchain_config(
                     flags = ["-Wl,--fix-cortex-a8", "-march=armv7-a"],
                     features = ["crosstool_cpu_arm"],
                 ),
-                flag_set(
-                    actions = actions.all_link,
-                    flags = ["-Wl,-z,max-page-size=4096"],
-                    features = ["crosstool_cpu_arm64", "crosstool_linker_lld"],
-                ),
 
                 # X86 options
                 flag_set(
@@ -933,6 +928,9 @@ def ndk_cc_toolchain_config(
                         # Force JNI symbols to be linked.
                         "-Wl,--undefined-glob='Java_*'",
                         "-Wl,--undefined-glob='JNI_*'",
+                        # 16KB page alignment for Android 15+ compatibility
+                        "-Wl,-z,max-page-size=16384",
+                        "-Wl,-z,common-page-size=16384",
                     ],
                 ),
                 flag_set(
