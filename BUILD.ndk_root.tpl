@@ -19,6 +19,7 @@ alias(
         "@platforms//os:android",
         CPU_CONSTRAINT[target_system_name],
     ],
+    exec_compatible_with = {exec_compatible_with},
     toolchain = "//{clang_directory}:cc_toolchain_%s" % target_system_name,
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
 ) for target_system_name in TARGET_SYSTEM_NAMES]
