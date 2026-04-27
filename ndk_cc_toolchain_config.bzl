@@ -265,6 +265,14 @@ def ndk_cc_toolchain_config(
             enabled = True,
         ),
 
+        # Enable writing archiver flags to a param file to avoid errors due to excessive
+        # command line argument length.
+        feature(name = "archive_param_file"),
+
+        # Enable writing compiler flags to a param file to avoid errors due to excessive
+        # command line argument length.
+        feature(name = "compiler_param_file"),
+
         # Blaze requests this feature by default, but we don't care.
         feature(name = "dependency_file"),
 
