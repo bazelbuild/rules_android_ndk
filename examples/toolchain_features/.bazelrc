@@ -7,3 +7,8 @@ common --experimental_google_legacy_api
 common --experimental_enable_android_migration_apis
 
 common --android_sdk=@androidsdk//:sdk
+
+# Support passing archiver and compiler parameters through a param file
+# Useful for platforms with low arg count limit (e.g Windows)
+# build --features=archive_param_file
+# build --features=compiler_param_file
