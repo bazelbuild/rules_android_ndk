@@ -32,7 +32,7 @@ cc_toolchain_suite(
     static_runtime_lib = "static_runtime_lib_%s" % target_system_name,
     strip_files = ":strip_files",
     supports_header_parsing = 0,
-    supports_param_files = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_%s" % target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
 ) for target_system_name in TARGET_SYSTEM_NAMES]
