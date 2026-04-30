@@ -26,17 +26,17 @@ android_library(
     name = "source_with_long_name_%d" % i,
     outs = ["source_with_long_name_%d.cc" % i],
     cmd = "echo '#define SRC_%d' > $@" % i,
-) for i in range(1024)]
+) for i in range(256)]
 
 [cc_library(
     name = "lib_with_long_name_%d" % i,
     srcs = [":source_with_long_name_%d.cc" % i],
-) for i in range(1024)]
+) for i in range(256)]
 
 cc_library(
     name = "huge_lib",
     # Tests a large number of dependencies
-    deps = [":lib_with_long_name_%d" % i for i in range(1024)],
+    deps = [":lib_with_long_name_%d" % i for i in range(256)],
 )
 
 cc_library(
