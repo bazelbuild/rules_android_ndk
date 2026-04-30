@@ -41,9 +41,9 @@ cc_library(
 
 cc_library(
     name = "jni",
+    srcs = ["jni.cc"],
     # Tests a large number of params
     linkopts = ["-llog"] * 8000,
-    srcs = ["jni.cc"],
     deps = [
         ":huge_lib",
         ":jni_dep",
