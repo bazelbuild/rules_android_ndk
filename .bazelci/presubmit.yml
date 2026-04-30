@@ -112,7 +112,7 @@ tasks:
   toolchain_features_macos:
     name: Toolchain Features
     bazel: ${{ bazel }}
-    <<: [*macos, *toolchain_features]
+    <<: [*macos_arm64, *toolchain_features]
   toolchain_features_windows:
     name: Toolchain Features
     bazel: ${{ bazel }}
