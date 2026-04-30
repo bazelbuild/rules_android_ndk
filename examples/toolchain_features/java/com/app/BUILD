@@ -26,12 +26,12 @@ android_library(
     name = "source_with_long_name_%d" % i,
     outs = ["source_with_long_name_%d.cc" % i],
     cmd = "echo '#define SRC_%d' > $@" % i,
-) for i in range(6400)]
+) for i in range(1024)]
 
 cc_library(
     name = "huge_lib",
-    srcs = [":source_with_long_name_%d" % i for i in range(6400)],
-    linkopts = ["-llog"] * 6400,
+    srcs = [":source_with_long_name_%d" % i for i in range(1024)],
+    linkopts = ["-llog"] * 1024,
     linkstatic = 1,
 )
 
