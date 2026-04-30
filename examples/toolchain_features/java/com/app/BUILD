@@ -28,15 +28,21 @@ android_library(
     cmd = "echo '#define SRC_%d' > $@" % i,
 ) for i in range(1024)]
 
+[cc_library(
+    name = "lib_with_long_name_%d" % i,
+    srcs = [":source_with_long_name_%d.cc" % i],
+) for i in range(1024)]
+
 cc_library(
     name = "huge_lib",
-    srcs = [":source_with_long_name_%d" % i for i in range(1024)],
-    linkopts = ["-llog"] * 1024,
-    linkstatic = 1,
+    # Tests a large number of dependencies
+    deps = [":lib_with_long_name_%d" % i for i in range(1024)],
 )
 
 cc_library(
     name = "jni",
+    # Tests a large number of params
+    linkopts = ["-llog"] * 8000,
     srcs = ["jni.cc"],
     deps = [
         ":huge_lib",
