@@ -1,7 +1,7 @@
 """Declarations for the NDK's Clang directory."""
 
-load("@rules_cc//cc/toolchains:cc_toolchain_suite.bzl", "cc_toolchain_suite")
 load("@rules_cc//cc/toolchains:cc_toolchain.bzl", "cc_toolchain")
+load("@rules_cc//cc/toolchains:cc_toolchain_suite.bzl", "cc_toolchain_suite")
 load("@@{repository_name}//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
 load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
@@ -32,6 +32,7 @@ cc_toolchain_suite(
     static_runtime_lib = "static_runtime_lib_%s" % target_system_name,
     strip_files = ":strip_files",
     supports_header_parsing = 0,
+    supports_param_files = 1,
     toolchain_config = ":toolchain_config_%s" % target_system_name,
     toolchain_identifier = "toolchain_identifier_%s" % target_system_name,
 ) for target_system_name in TARGET_SYSTEM_NAMES]

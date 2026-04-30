@@ -38,6 +38,16 @@ cpu_features: &cpu_features
   build_targets:
     - "//:all"
 
+toolchain_features: &toolchain_features
+  working_directory: examples/toolchain_features
+  build_flags:
+    - "--incompatible_disallow_empty_glob"
+    - "--incompatible_enable_android_toolchain_resolution"
+    - "--android_platforms=//:arm64-v8a,//:x86"
+    - "--enable_bzlmod=True"
+  build_targets:
+    - "//java/com/app:app"
+
 ubuntu2004: &ubuntu2004
   platform: ubuntu2004
   environment:
@@ -94,3 +104,16 @@ tasks:
     name: CPU Features
     bazel: ${{ bazel }}
     <<: [*macos, *cpu_features]
+
+  toolchain_features_ubuntu2004:
+    name: Toolchain Features
+    bazel: ${{ bazel }}
+    <<: [*ubuntu2004, *toolchain_features]
+  toolchain_features_macos:
+    name: Toolchain Features
+    bazel: ${{ bazel }}
+    <<: [*macos_arm64, *toolchain_features]
+  toolchain_features_windows:
+    name: Toolchain Features
+    bazel: ${{ bazel }}
+    <<: [*windows, *toolchain_features]
