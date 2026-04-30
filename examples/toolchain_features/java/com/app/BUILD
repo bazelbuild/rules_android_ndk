@@ -39,8 +39,8 @@ cc_library(
     name = "jni",
     srcs = ["jni.cc"],
     deps = [
-        ":jni_dep",
         ":huge_lib",
+        ":jni_dep",
     ],
 )
 
