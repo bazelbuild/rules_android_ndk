@@ -7,6 +7,12 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files(["target_systems.bzl"])
 
+filegroup(
+    name = "all_files",
+    srcs = glob(["**/*"]),
+    visibility = ["//visibility:public"],
+)
+
 alias(
     name = "toolchain",
     actual = "//{clang_directory}:cc_toolchain_suite",
