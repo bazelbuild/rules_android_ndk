@@ -12,7 +12,6 @@ basic_example: &basic_example
   working_directory: examples/basic
   build_flags:
     - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=False"
     - "--enable_workspace=True"
@@ -23,7 +22,6 @@ basic_example_bzlmod: &basic_example_bzlmod
   working_directory: examples/basic
   build_flags:
     - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
   build_targets:
     - "//java/com/app:app"
@@ -32,7 +30,6 @@ cpu_features: &cpu_features
   working_directory: examples/cpu_features
   build_flags:
     - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--platforms=//:arm64-v8a"
     - "--enable_workspace=True"
   build_targets:
@@ -42,7 +39,6 @@ toolchain_features: &toolchain_features
   working_directory: examples/toolchain_features
   build_flags:
     - "--incompatible_disallow_empty_glob"
-    - "--incompatible_enable_android_toolchain_resolution"
     - "--android_platforms=//:arm64-v8a,//:x86"
     - "--enable_bzlmod=True"
   build_targets:
