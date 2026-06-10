@@ -2,4 +2,5 @@
 common --experimental_google_legacy_api
 common --experimental_enable_android_migration_apis
 
+build --platforms=//:arm64-v8a
 common --android_sdk=@androidsdk//:sdk
