@@ -4,8 +4,7 @@ matrix:
   bazel: [
     7.4.1,
     8.6.0,
-# TODO: re-enable last_green once bazelbuild/rules_android#328 is resolved.
-#    last_green,
+    last_green,
   ]
 
 basic_example: &basic_example
@@ -13,8 +12,6 @@ basic_example: &basic_example
   build_flags:
     - "--incompatible_disallow_empty_glob"
     - "--android_platforms=//:arm64-v8a,//:x86"
-    - "--enable_bzlmod=False"
-    - "--enable_workspace=True"
   build_targets:
     - "//java/com/app:app"
 
@@ -44,17 +41,12 @@ toolchain_features: &toolchain_features
   build_targets:
     - "//java/com/app:app"
 
-ubuntu2004: &ubuntu2004
-  platform: ubuntu2004
+ubuntu2404: &ubuntu2404
+  platform: ubuntu2404
   environment:
     ANDROID_NDK_HOME: /opt/android-ndk-r25b
 
 macos: &macos
-  platform: macos
-  environment:
-    ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
-
-macos: &macos_arm64
   platform: macos_arm64
   environment:
     ANDROID_NDK_HOME: /Users/buildkite/android-ndk-r25b
@@ -66,14 +58,14 @@ windows: &windows
     BAZELCI_LOCAL_RUN: true
 
 tasks:
-  basic_example_ubuntu2004:
+  basic_example_ubuntu2404:
     name: Basic Example
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *basic_example]
-  basic_example_bzlmod_ubuntu2004:
+    <<: [*ubuntu2404, *basic_example]
+  basic_example_bzlmod_ubuntu2404:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *basic_example_bzlmod]
+    <<: [*ubuntu2404, *basic_example_bzlmod]
   basic_example_macos:
     name: Basic Example
     bazel: ${{ bazel }}
@@ -81,7 +73,7 @@ tasks:
   basic_example_bzlmod_macos:
     name: Basic Example Bzlmod
     bazel: ${{ bazel }}
-    <<: [*macos_arm64, *basic_example_bzlmod]
+    <<: [*macos, *basic_example_bzlmod]
   basic_example_windows:
     name: Basic Example
     bazel: ${{ bazel }}
@@ -92,23 +84,23 @@ tasks:
     <<: [*windows, *basic_example_bzlmod]
 
 
-  cpu_features_ubuntu2004:
+  cpu_features_ubuntu2404:
     name: CPU Features
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *cpu_features]
+    <<: [*ubuntu2404, *cpu_features]
   cpu_features_macos:
     name: CPU Features
     bazel: ${{ bazel }}
     <<: [*macos, *cpu_features]
 
-  toolchain_features_ubuntu2004:
+  toolchain_features_ubuntu2404:
     name: Toolchain Features
     bazel: ${{ bazel }}
-    <<: [*ubuntu2004, *toolchain_features]
+    <<: [*ubuntu2404, *toolchain_features]
   toolchain_features_macos:
     name: Toolchain Features
     bazel: ${{ bazel }}
-    <<: [*macos_arm64, *toolchain_features]
+    <<: [*macos, *toolchain_features]
   toolchain_features_windows:
     name: Toolchain Features
     bazel: ${{ bazel }}

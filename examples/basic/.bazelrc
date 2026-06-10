@@ -7,3 +7,9 @@ common --experimental_google_legacy_api
 common --experimental_enable_android_migration_apis
 
 common --android_sdk=@androidsdk//:sdk
+
+build --tool_java_language_version=17
+build --java_language_version=17
+build --java_runtime_version=17
+build --tool_java_runtime_version=17
+build --platforms=//:arm64-v8a
