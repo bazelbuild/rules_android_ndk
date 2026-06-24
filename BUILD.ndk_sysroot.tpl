@@ -21,9 +21,12 @@ filegroup(
 
 [filegroup(
     name = "dynamic_runtime_lib_%s" % target_system_name,
+    # The shared C++ runtime is the one library a binary linking the NDK's C++
+    # must ship (e.g. bundled into an APK); the other libraries under usr/lib are
+    # stubs for system libraries provided by the device, so they are deliberately
+    # not included here.
     srcs = glob([
-        # "usr/lib/%s/**/*.so" % target_system_name,
-        # "usr/lib/%s/**/*.a" % target_system_name,
+        "usr/lib/%s/libc++_shared.so" % target_system_name,
     ], allow_empty = True),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
