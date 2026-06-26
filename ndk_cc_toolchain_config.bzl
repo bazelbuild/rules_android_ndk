@@ -370,11 +370,6 @@ def ndk_cc_toolchain_config(
             enabled = api_level < 21,
         ),
         feature(
-            name = "crosstool_linker_gold",
-            provides = ["variant:crosstool_linker"],
-            enabled = False,
-        ),
-        feature(
             name = "crosstool_linker_lld",
             provides = ["variant:crosstool_linker"],
             enabled = True,
@@ -1001,12 +996,7 @@ def ndk_cc_toolchain_config(
                     flags = ["-Wl,--exclude-libs,libunwind.a"],
                 ),
 
-                # LLD/Gold specific linking options
-                flag_set(
-                    actions = actions.all_link,
-                    flags = ["-fuse-ld=gold"],
-                    features = ["crosstool_linker_gold"],
-                ),
+                # LLD specific linking options
                 flag_set(
                     actions = actions.all_link,
                     flags = ["-fuse-ld=lld"],
@@ -1366,13 +1356,6 @@ def ndk_cc_toolchain_config(
                 ),
 
                 ## Options which need to go late -- after all the user options -- go here.
-                flag_set(
-                    actions = actions.all_link,
-                    # Override and turn off icf for ld.gold x86.
-                    flags = ["-Wl,--icf=none"],
-                    features = ["opt", "crosstool_linker_gold", "crosstool_cpu_x86"],
-                ),
-
                 # Hardcoded library link flags.
                 flag_set(
                     actions = actions.all_full_link,
