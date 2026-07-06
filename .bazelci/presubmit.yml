@@ -4,6 +4,7 @@ matrix:
   bazel: [
     7.4.1,
     8.6.0,
+    9.1.1,
     last_green,
   ]
 
