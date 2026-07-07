@@ -2,8 +2,9 @@
 buildifier: latest
 matrix:
   bazel: [
-    7.4.1,
-    8.6.0,
+    7.x,
+    8.x,
+    9.x,
     last_green,
   ]
 
