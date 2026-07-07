@@ -1479,7 +1479,7 @@ def ndk_cc_toolchain_config_rule_implementation(ctx):
             abi_libc_version = "18",
             artifact_name_patterns = [],
             cc_target_os = "android",
-            compiler = "llvm-c++",
+            compiler = "clang",
             make_variables = [],
             target_libc = "bionic",
         )
