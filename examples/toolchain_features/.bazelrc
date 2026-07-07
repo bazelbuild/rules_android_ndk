@@ -1,4 +1,3 @@
-common --android_sdk=@androidsdk//:sdk
 build --platforms=//:arm64-v8a
 # Support passing archiver and compiler parameters through a param file
 # Useful for platforms with low arg count limit (e.g Windows)
