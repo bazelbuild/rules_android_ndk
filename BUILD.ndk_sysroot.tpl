@@ -13,11 +13,7 @@ filegroup(
 [filegroup(
     name = "libc_top_%s" % target_system_name,
     srcs = glob(
-        [
-            "usr/lib/{target_system_name}/{api_level}/*".format(
-                target_system_name = target_system_name,
-            ),
-        ],
+        ["usr/lib/{target_system_name}/{api_level}/*".format(target_system_name = target_system_name)],
         allow_empty = True,
     ),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
@@ -42,15 +38,11 @@ filegroup(
         # libandroid_support was removed in NDK 26, so use a glob
         # for backward compatibility.
         "arm-linux-androideabi": glob(
-            [
-                "usr/lib/arm-linux-androideabi/libandroid_support.a",
-            ],
+            ["usr/lib/arm-linux-androideabi/libandroid_support.a"],
             allow_empty = True,
         ),
         "i686-linux-android": glob(
-            [
-                "usr/lib/i686-linux-android/libandroid_support.a",
-            ],
+            ["usr/lib/i686-linux-android/libandroid_support.a"],
             allow_empty = True,
         ),
     }.get(
