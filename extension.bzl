@@ -36,6 +36,11 @@ def _android_ndk_repository_extension_impl(module_ctx):
         **kwargs
     )
 
+    if hasattr(module_ctx, "extension_metadata"):
+        return module_ctx.extension_metadata(reproducible = True)
+
+    return None
+
 _CONFIGURE_TAG_CLASS = tag_class(attrs = {
     "api_level": attr.int(
         doc = "The minimum Android API level to target.",
@@ -51,4 +56,5 @@ android_ndk_repository_extension = module_extension(
     tag_classes = {
         "configure": _CONFIGURE_TAG_CLASS,
     },
+    environ = ["ANDROID_NDK_HOME"],
 )
