@@ -104,6 +104,7 @@ def _android_ndk_repository_common(ctx, ndk_path):
         "target_systems.bzl",
         ctx.attr._template_target_systems,
         {
+            "{api_level}": str(api_level),
         },
         executable = False,
     )

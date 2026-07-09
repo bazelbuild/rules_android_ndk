@@ -14,3 +14,4 @@ CPU_CONSTRAINT = {
     "x86_64-linux-android": "@platforms//cpu:x86_64",
 }
 
+API_LEVEL = {api_level}
