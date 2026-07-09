@@ -1430,6 +1430,10 @@ def ndk_cc_toolchain_config(
                 ),
             ],
         ),
+        feature(
+            name = "disable_fallback_native_deps_linking",
+            enabled = False,
+        ),
     ]
 
     return dict(
