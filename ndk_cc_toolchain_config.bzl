@@ -31,6 +31,7 @@ load("@rules_cc//cc/common:cc_common.bzl", "cc_common")
 
 def ndk_cc_toolchain_config(
         api_level,
+        bazel_major_version,
         target_system_name,
         tools,
         **config):
@@ -38,6 +39,7 @@ def ndk_cc_toolchain_config(
 
     Args:
         api_level: Integer level of the SDK version.
+        bazel_major_version: Integer major version of Bazel.
         target_system_name: Argument to the --target flag.
         tools: Dict of (tool_name, tool_path) items.
         **config: Legacy/default arguments.
@@ -303,7 +305,8 @@ def ndk_cc_toolchain_config(
         feature(name = "dynamic_linking_mode"),
         feature(
             name = "static_link_cpp_runtimes",
-            enabled = True,
+            # On bazel >=9, a cc_runtimes_toolchain_type is provided instead
+            enabled = bazel_major_version < 9,
         ),
         feature(
             name = "supports_start_end_lib",
@@ -1447,6 +1450,7 @@ def ndk_cc_toolchain_config_rule_implementation(ctx):
         ctx = ctx,
         **ndk_cc_toolchain_config(
             api_level = ctx.attr.api_level,
+            bazel_major_version = ctx.attr.bazel_major_version,
             target_system_name = ctx.attr.target_system_name,
             tools = {
                 "clang": "bin/clang" + ctx.attr.executable_extension,
@@ -1501,6 +1505,7 @@ ndk_cc_toolchain_config_rule = rule(
         ),
         "toolchain_identifier": attr.string(mandatory = True),
         "executable_extension": attr.string(default = ""),
+        "bazel_major_version": attr.int(mandatory = True),
     },
 )
 
