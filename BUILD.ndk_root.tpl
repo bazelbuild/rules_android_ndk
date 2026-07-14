@@ -5,7 +5,10 @@ load("//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
 
-exports_files(["target_systems.bzl"])
+exports_files([
+    "api_level.bzl",
+    "target_systems.bzl",
+])
 
 alias(
     name = "toolchain",
