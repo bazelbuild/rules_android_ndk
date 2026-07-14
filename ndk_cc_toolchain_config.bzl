@@ -65,6 +65,8 @@ def ndk_cc_toolchain_config(
     if "gcc" not in tools:
         tool_paths.append(tool_path(name = "gcc", path = tools["clang"]))
 
+    target_with_api_level = "{}{}".format(target_system_name, api_level)
+
     # Construct action configurations.
     action_configs = [
         action_config(
@@ -613,7 +615,7 @@ def ndk_cc_toolchain_config(
                     actions = actions.all_compile_and_link + actions.cc_flags_make_variable,
                     flags = [
                         "-no-canonical-prefixes",
-                        "--target=%s%d" % (target_system_name, api_level),
+                        "--target={}".format(target_with_api_level),
                     ],
                 ),
                 # Compile + Link
@@ -1435,7 +1437,7 @@ def ndk_cc_toolchain_config(
     return dict(
         action_configs = action_configs,
         features = features,
-        target_system_name = target_system_name,
+        target_system_name = target_with_api_level,
         tool_paths = tool_paths,
         **config
     )
