@@ -1,6 +1,6 @@
 """Declarations for the NDK's Clang sysroot directory."""
 
-load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
+load("@rules_android_ndk//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
 

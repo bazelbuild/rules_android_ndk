@@ -1,11 +1,9 @@
 """Top-level aliases."""
 
+load("@rules_android_ndk//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load("//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
-
-exports_files(["target_systems.bzl"])
 
 alias(
     name = "toolchain",

@@ -13,4 +13,3 @@ CPU_CONSTRAINT = {
     "i686-linux-android": "@platforms//cpu:x86_32",
     "x86_64-linux-android": "@platforms//cpu:x86_64",
 }
-
