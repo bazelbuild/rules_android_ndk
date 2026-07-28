@@ -7,6 +7,13 @@ package(default_visibility = ["//visibility:public"])
 
 exports_files(["target_systems.bzl"])
 
+# A simple file group that includes all files with public visiblity.
+# This is useful to easily export NDK files outside of the bazel package,
+# e.g. to allow Gradle to access the NDK files when using the NDK managed
+# by Bazel.
+# See this discussion for more context: https://github.com/bazelbuild/rules_android_ndk/pull/136
+# Once Android Studio Bazel plugin reaches feature parity with Gradle, and AS integration will
+# no longer needed hacks where Bazel is used as a secondary citizen, this filegroup can be removed.
 filegroup(
     name = "all_files",
     srcs = glob(["**/*"]),
