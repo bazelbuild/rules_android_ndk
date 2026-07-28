@@ -101,14 +101,6 @@ def _android_ndk_repository_common(ctx, ndk_path):
     )
 
     ctx.template(
-        "target_systems.bzl",
-        ctx.attr._template_target_systems,
-        {
-        },
-        executable = False,
-    )
-
-    ctx.template(
         "%s/BUILD.bazel" % clang_directory,
         ctx.attr._template_ndk_clang,
         {
@@ -172,10 +164,6 @@ _COMMON_ATTR = {
     ),
     "_template_ndk_sysroot": attr.label(
         default = Label(":BUILD.ndk_sysroot.tpl"),
-        allow_single_file = True,
-    ),
-    "_template_target_systems": attr.label(
-        default = Label("//:target_systems.bzl.tpl"),
         allow_single_file = True,
     ),
 }
