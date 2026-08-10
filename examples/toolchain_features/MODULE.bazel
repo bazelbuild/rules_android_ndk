@@ -15,6 +15,14 @@ register_toolchains("@androidndk//:all")
 
 bazel_dep(name = "rules_android", version = "0.7.3")
 
+# Temporary fix while waiting for the next rules_android release.
+# https://github.com/bazelbuild/rules_android/issues/544
+git_override(
+    module_name = "rules_android",
+    commit = "5b028d1c3567f12103699ba0f953e416e624a7a9",
+    remote = "https://github.com/bazelbuild/rules_android.git",
+)
+
 register_toolchains(
     "@rules_android//toolchains/android:android_default_toolchain",
     "@rules_android//toolchains/android_sdk:android_sdk_tools",
