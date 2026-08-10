@@ -20,13 +20,12 @@ filegroup(
 
 [filegroup(
     name = "dynamic_runtime_lib_%s" % target_system_name,
-    srcs = glob(
-        [
-            # "usr/lib/%s/**/*.so" % target_system_name,
-            # "usr/lib/%s/**/*.a" % target_system_name,
-        ],
-        allow_empty = True,
-    ),
+    srcs = glob([
+        # NOTE: libc++.so stubs also exist but they only redirect to this lib.
+        # Having only this here means we avoid the risk of accidentally
+        # shipping the linkerscript.
+        "usr/lib/%s/**/libc++_shared.so" % target_system_name,
+    ]),
 ) for target_system_name in TARGET_SYSTEM_NAMES]
 
 [filegroup(

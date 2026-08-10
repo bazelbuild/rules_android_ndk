@@ -35,6 +35,13 @@ _EXEC_CONSTRAINTS = {
     ],
 }
 
+def _bazel_major_version():
+    major_version = native.bazel_version.split(".", 1)[0]
+    if major_version.isdigit():
+        return int(major_version)
+
+    return 9999
+
 def _get_clang_resource_dir(ctx, clang_directory, is_windows):
     clang_resource_dir = getattr(ctx.attr, "clang_resource_dir", None)
     if clang_resource_dir:
@@ -94,8 +101,10 @@ def _android_ndk_repository_common(ctx, ndk_path):
         "BUILD.bazel",
         ctx.attr._template_ndk_root,
         {
+            "{bazel_major_version}": str(_bazel_major_version()),
             "{clang_directory}": clang_directory,
             "{exec_compatible_with}": repr(exec_compatible_with),
+            "{repository_name}": repository_name,
         },
         executable = False,
     )
@@ -113,6 +122,7 @@ def _android_ndk_repository_common(ctx, ndk_path):
         ctx.attr._template_ndk_clang,
         {
             "{api_level}": str(api_level),
+            "{bazel_major_version}": str(_bazel_major_version()),
             "{clang_resource_directory}": clang_resource_directory,
             "{executable_extension}": executable_extension,
             "{repository_name}": repository_name,
