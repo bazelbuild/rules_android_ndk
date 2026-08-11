@@ -371,11 +371,6 @@ def ndk_cc_toolchain_config(
             enabled = api_level < 21,
         ),
         feature(
-            name = "crosstool_linker_lld",
-            provides = ["variant:crosstool_linker"],
-            enabled = True,
-        ),
-        feature(
             name = "proto_force_lite_runtime",
             implies = ["proto_disable_services"],
             enabled = True,
@@ -639,7 +634,6 @@ def ndk_cc_toolchain_config(
                 flag_set(
                     actions = actions.all_link,
                     flags = ["-Wl,-zseparate-code", "-Wl,--no-rosegment"],
-                    features = ["crosstool_linker_lld"],
                 ),
                 # C++ compiles
                 flag_set(
@@ -1012,7 +1006,6 @@ def ndk_cc_toolchain_config(
                 flag_set(
                     actions = actions.all_link,
                     flags = ["-fuse-ld=lld"],
-                    features = ["crosstool_linker_lld"],
                 ),
                 flag_set(
                     actions = actions.all_link,
