@@ -5,7 +5,10 @@ load("//:target_systems.bzl", "CPU_CONSTRAINT", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
 
-exports_files(["target_systems.bzl"])
+exports_files([
+    "api_level.bzl",
+    "target_systems.bzl",
+])
 
 # A simple file group that includes all files with public visiblity.
 # This is useful to easily export NDK files outside of the bazel package,
