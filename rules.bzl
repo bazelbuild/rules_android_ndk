@@ -35,6 +35,18 @@ _EXEC_CONSTRAINTS = {
     ],
 }
 
+def _host_platform(ctx):
+    os_name = ctx.os.name.lower()
+    if os_name.startswith("linux"):
+        return "linux-x86_64"
+    if os_name.startswith("mac"):
+        if ctx.os.arch in ("aarch64", "arm64"):
+            return "darwin-arm64"
+        return "darwin-x86_64"
+    if os_name.startswith("windows"):
+        return "windows-x86_64"
+    fail("Unsupported operating system: " + ctx.os.name)
+
 def _get_clang_resource_dir(ctx, clang_directory, is_windows):
     clang_resource_dir = getattr(ctx.attr, "clang_resource_dir", None)
     if clang_resource_dir:
@@ -60,11 +72,8 @@ def _android_ndk_repository_common(ctx, ndk_path):
     """
     is_windows = False
     executable_extension = ""
-    exec_compatible_with = None
-    platform = ctx.os.name
-    if hasattr(ctx.attr, "platform"):
-        platform = ctx.attr.platform
-        exec_compatible_with = _EXEC_CONSTRAINTS[platform]
+    platform = getattr(ctx.attr, "platform", None) or _host_platform(ctx)
+    exec_compatible_with = _EXEC_CONSTRAINTS[platform]
 
     if platform.startswith("linux"):
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
