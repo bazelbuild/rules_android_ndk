@@ -16,6 +16,11 @@ register_toolchains("@androidndk//:all")
 
 bazel_dep(name = "rules_android", version = "0.7.3")
 
+# rules_jvm_external 7.2 no longer passes -noverify to coursier, which the
+# embedded JDK 27 in Bazel@HEAD rejects. Overrides the 6.9 pulled in by
+# rules_android. https://github.com/bazelbuild/rules_android_ndk/issues/150
+bazel_dep(name = "rules_jvm_external", version = "7.2")
+
 # Temporary fix while waiting for the next rules_android release.
 # https://github.com/bazelbuild/rules_android/issues/544
 git_override(
