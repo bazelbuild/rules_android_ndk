@@ -14,6 +14,7 @@ use_repo(android_ndk_repository_extension, "androidndk")
 register_toolchains("@androidndk//:all")
 
 bazel_dep(name = "rules_android", version = "0.7.3")
+bazel_dep(name = "rules_jvm_external", version = "7.2")
 
 # Temporary fix while waiting for the next rules_android release.
 # https://github.com/bazelbuild/rules_android/issues/544
