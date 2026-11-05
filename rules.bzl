@@ -133,19 +133,23 @@ def _android_ndk_repository_common(ctx, ndk_path):
 # Manually create a partial symlink tree of the NDK to avoid creating BUILD
 # files in the real NDK directory.
 def _create_symlinks(ctx, ndk_path, clang_directory, sysroot_directory):
-    # Path needs to end in "/" for replace() below to work
+    # Path needs to end in "/" for the concatenations below to work
     if not ndk_path.endswith("/"):
         ndk_path = ndk_path + "/"
 
+    # Build repo-relative paths from the entry's basename rather than by
+    # stripping the NDK prefix from the absolute path. The paths returned by
+    # readdir() are normalized by Bazel (e.g. on Windows "c:\foo" becomes
+    # "C:/foo"), so they may not textually match ndk_path.
     for p in ctx.path(ndk_path + clang_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
+        repo_relative_path = clang_directory + "/" + p.basename
 
         # Skip sysroot directory, since it gets its own BUILD file
         if repo_relative_path != sysroot_directory:
             ctx.symlink(p, repo_relative_path)
 
     for p in ctx.path(ndk_path + sysroot_directory).readdir():
-        repo_relative_path = str(p).replace(ndk_path, "")
+        repo_relative_path = sysroot_directory + "/" + p.basename
         ctx.symlink(p, repo_relative_path)
 
     ctx.symlink(ndk_path + "sources", "sources")
