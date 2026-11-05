@@ -48,23 +48,25 @@ def _get_clang_resource_dir(ctx, clang_directory, is_windows):
         stdout = stdout.replace("\\", "/")
     return stdout.split(clang_directory)[1].strip("/")
 
-def _android_ndk_repository_common(ctx, ndk_path):
+def _android_ndk_repository_common(
+        *,
+        ctx,
+        ndk_path,
+        platform,
+        exec_compatible_with = None):
     """Install the Android NDK files.
 
     Args:
         ctx: An implementation context.
         ndk_path: The path to the ndk
+        platform: The execution platform the NDK represents.
+        exec_compatible_with: Constraints which represent `platform`
 
     Returns:
         A final dict of configuration attributes and values.
     """
     is_windows = False
     executable_extension = ""
-    exec_compatible_with = None
-    platform = ctx.os.name
-    if hasattr(ctx.attr, "platform"):
-        platform = ctx.attr.platform
-        exec_compatible_with = _EXEC_CONSTRAINTS[platform]
 
     if platform.startswith("linux"):
         clang_directory = "toolchains/llvm/prebuilt/linux-x86_64"
@@ -183,10 +185,22 @@ _COMMON_ATTR = {
 def _exec_configuration_android_ndk_repository_impl(ctx):
     ndk_path = ctx.path(Label(ctx.attr.anchor)).dirname
 
-    return _android_ndk_repository_common(ctx, ndk_path)
+    platform = ctx.attr.platform
+    exec_compatible_with = _EXEC_CONSTRAINTS[platform]
 
+    return _android_ndk_repository_common(
+        ctx = ctx,
+        ndk_path = ndk_path,
+        platform = platform,
+        exec_compatible_with = exec_compatible_with,
+    )
+
+# This variant of `android_ndk_repository` is useful for defining
+# multiple toolchains for Android gated behind `cfg = "exec"` configurations.
+# For example, one can have a linux and macos NDK installed and distinguish
+# the two via the `platform` attribute.
 exec_configuration_android_ndk_repository = repository_rule(
-    doc = "A repository rule that integrates the Android NDK from a workspace. Uses an anchor label to locate the NDK and requires the host platform and Clang resource directory to be specified. For local NDK installations, use android_ndk_repository instead.",
+    doc = "A repository rule that integrates the Android NDK from a workspace. Uses an anchor label to locate the NDK and requires the host platform and Clang resource directory to be specified. For local NDK installations, use `android_ndk_repository` instead.",
     implementation = _exec_configuration_android_ndk_repository_impl,
     attrs = _COMMON_ATTR | {
         "anchor": attr.string(
@@ -214,7 +228,11 @@ def _android_ndk_repository_impl(ctx):
     if ndk_path.startswith("$WORKSPACE_ROOT"):
         ndk_path = str(ctx.workspace_root) + ndk_path.removeprefix("$WORKSPACE_ROOT")
 
-    return _android_ndk_repository_common(ctx, ndk_path)
+    return _android_ndk_repository_common(
+        ctx = ctx,
+        ndk_path = ndk_path,
+        platform = ctx.os.name,
+    )
 
 android_ndk_repository = repository_rule(
     doc = "A repository rule that integrates the Android NDK from a local path. Uses ANDROID_NDK_HOME environment variable or the path attribute. This is the rule used by the bzlmod extension.",
