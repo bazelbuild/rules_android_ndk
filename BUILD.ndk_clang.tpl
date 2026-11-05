@@ -17,6 +17,12 @@ cc_toolchain_suite(
     },
 )
 
+filegroup(
+    name = "empty",
+    srcs = [],
+    visibility = ["//visibility:private"],
+)
+
 [cc_toolchain(
     name = "cc_toolchain_%s" % target_system_name,
     all_files = ":all_files",
@@ -25,7 +31,7 @@ cc_toolchain_suite(
     compiler_files = ":compiler_files_%s" % target_system_name,
     coverage_files = ":coverage_files",
     dwp_files = ":dwp_files",
-    dynamic_runtime_lib = ":dynamic_runtime_lib_%s" % target_system_name,
+    dynamic_runtime_lib = ":empty",  # NOTE: This feature is supported with cc_runtimes_toolchain_type on bazel 9.x+
     libc_top = ":libc_top_%s" % target_system_name,
     linker_files = ":linker_files_%s" % target_system_name,
     objcopy_files = ":objcopy_files",
@@ -40,6 +46,7 @@ cc_toolchain_suite(
 [ndk_cc_toolchain_config_rule(
     name = "toolchain_config_%s" % target_system_name,
     api_level = {api_level},
+    bazel_major_version = {bazel_major_version},
     clang_resource_directory = "{clang_resource_directory}",
     executable_extension = "{executable_extension}",
     target_system_name = target_system_name,
@@ -111,11 +118,6 @@ filegroup(
 )
 
 [filegroup(
-    name = "dynamic_runtime_lib_%s" % target_system_name,
-    srcs = ["//{sysroot_directory}:dynamic_runtime_lib_%s" % target_system_name],
-) for target_system_name in TARGET_SYSTEM_NAMES]
-
-[filegroup(
     name = "libc_top_%s" % target_system_name,
     srcs = ["//{sysroot_directory}:libc_top_%s" % target_system_name],
 ) for target_system_name in TARGET_SYSTEM_NAMES]
@@ -124,7 +126,6 @@ filegroup(
     name = "linker_files_%s" % target_system_name,
     srcs = [
         ":all_binaries",
-        ":static_runtime_lib_%s" % target_system_name,
     ] + glob(
         [
             "lib/gcc/%s/**" % target_system_name,
