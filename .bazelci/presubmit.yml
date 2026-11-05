@@ -55,7 +55,7 @@ macos: &macos
 windows: &windows
   platform: windows
   environment:
-    ANDROID_NDK_HOME: c:/android_ndk/r25b
+    ANDROID_NDK_HOME: C:/android_ndk/r25b
     BAZELCI_LOCAL_RUN: true
 
 tasks:
