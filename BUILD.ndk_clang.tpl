@@ -3,6 +3,7 @@
 load("@rules_cc//cc/toolchains:cc_toolchain.bzl", "cc_toolchain")
 load("@rules_cc//cc/toolchains:cc_toolchain_suite.bzl", "cc_toolchain_suite")
 load("@@{repository_name}//:ndk_cc_toolchain_config.bzl", "ndk_cc_toolchain_config_rule")
+load("//:api_level.bzl", "API_LEVEL")
 load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
@@ -39,7 +40,7 @@ cc_toolchain_suite(
 
 [ndk_cc_toolchain_config_rule(
     name = "toolchain_config_%s" % target_system_name,
-    api_level = {api_level},
+    api_level = API_LEVEL,
     clang_resource_directory = "{clang_resource_directory}",
     executable_extension = "{executable_extension}",
     target_system_name = target_system_name,

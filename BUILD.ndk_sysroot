@@ -1,5 +1,6 @@
 """Declarations for the NDK's Clang sysroot directory."""
 
+load("//:api_level.bzl", "API_LEVEL")
 load("//:target_systems.bzl", "TARGET_SYSTEM_NAMES")
 
 package(default_visibility = ["//visibility:public"])
@@ -13,7 +14,10 @@ filegroup(
 [filegroup(
     name = "libc_top_%s" % target_system_name,
     srcs = glob(
-        ["usr/lib/{target_system_name}/{api_level}/*".format(target_system_name = target_system_name)],
+        ["usr/lib/{target_system_name}/{api_level}/*".format(
+            api_level = API_LEVEL,
+            target_system_name = target_system_name,
+        )],
         allow_empty = True,
     ),
 ) for target_system_name in TARGET_SYSTEM_NAMES]

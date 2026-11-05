@@ -108,11 +108,15 @@ def _android_ndk_repository_common(ctx, ndk_path):
         executable = False,
     )
 
+    ctx.file(
+        "api_level.bzl",
+        "API_LEVEL = %d\n" % api_level,
+    )
+
     ctx.template(
         "%s/BUILD.bazel" % clang_directory,
         ctx.attr._template_ndk_clang,
         {
-            "{api_level}": str(api_level),
             "{clang_resource_directory}": clang_resource_directory,
             "{executable_extension}": executable_extension,
             "{repository_name}": repository_name,
@@ -121,13 +125,9 @@ def _android_ndk_repository_common(ctx, ndk_path):
         executable = False,
     )
 
-    ctx.template(
+    ctx.symlink(
+        ctx.attr._build_ndk_sysroot,
         "%s/BUILD.bazel" % sysroot_directory,
-        ctx.attr._template_ndk_sysroot,
-        {
-            "{api_level}": str(api_level),
-        },
-        executable = False,
     )
 
 # Manually create a partial symlink tree of the NDK to avoid creating BUILD
@@ -162,16 +162,16 @@ _COMMON_ATTR = {
         default = Label("//:BUILD"),
         allow_single_file = True,
     ),
+    "_build_ndk_sysroot": attr.label(
+        default = Label("//:BUILD.ndk_sysroot"),
+        allow_single_file = True,
+    ),
     "_template_ndk_clang": attr.label(
         default = Label("//:BUILD.ndk_clang.tpl"),
         allow_single_file = True,
     ),
     "_template_ndk_root": attr.label(
         default = Label("//:BUILD.ndk_root.tpl"),
-        allow_single_file = True,
-    ),
-    "_template_ndk_sysroot": attr.label(
-        default = Label(":BUILD.ndk_sysroot.tpl"),
         allow_single_file = True,
     ),
     "_template_target_systems": attr.label(
