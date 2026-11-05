@@ -9,11 +9,22 @@ on:
       - "v*.*.*"
 
 permissions:
+  attestations: write
+  id-token: write
   contents: write
 
 jobs:
   release:
-    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v6
+    uses: bazel-contrib/.github/.github/workflows/release_ruleset.yaml@v7.7.0
     with:
       release_files: rules_android_ndk-*.tar.gz
       bazel_test_command: "cd examples/basic && bazel build java/com/app --android_platforms=//:arm64-v8a"
+      prerelease: ${{ contains(inputs.tag_name || github.ref_name, '-') }}
+      tag_name: ${{ inputs.tag_name || github.ref_name }}
+  publish:
+    needs: release
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag_name: ${{ inputs.tag_name || github.ref_name }}
+    secrets:
+      publish_token: ${{ secrets.publish_token || secrets.BCR_PUBLISH_TOKEN }}
