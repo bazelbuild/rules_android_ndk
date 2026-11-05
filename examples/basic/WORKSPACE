@@ -11,9 +11,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_android",
-    sha256 = "c4cd258d3761eff08ee044c0252179bb6ee8af8ab24f7dafb73b280eeda98243",
-    strip_prefix = "rules_android-0.7.3",
-    url = "https://github.com/bazelbuild/rules_android/releases/download/v0.7.3/rules_android-v0.7.3.tar.gz",
+    sha256 = "d8c52d2aba8f3c2f0b8f8e8463b05ca953f9e7ed8933cf3065e84e8a8679462a",
+    strip_prefix = "rules_android-0.8.1",
+    url = "https://github.com/bazelbuild/rules_android/releases/download/v0.8.1/rules_android-v0.8.1.tar.gz",
 )
 
 # Android rules dependencies
