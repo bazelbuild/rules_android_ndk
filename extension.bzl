@@ -37,7 +37,11 @@ def _android_ndk_repository_extension_impl(module_ctx):
     )
 
     if hasattr(module_ctx, "extension_metadata"):
-        return module_ctx.extension_metadata(reproducible = True)
+        return module_ctx.extension_metadata(
+            root_module_direct_deps = ["androidndk"],
+            root_module_direct_dev_deps = [],
+            reproducible = True,
+        )
 
     return None
 
